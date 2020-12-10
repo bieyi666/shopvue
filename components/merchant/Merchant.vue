@@ -8,7 +8,11 @@
       background-color="#545c64"
       text-color="#fff"
       active-text-color="#ffd04b">
-      <el-menu-item index="1">返回购物中心</el-menu-item>
+      <el-menu-item index="1">
+        <router-link to="/mainPage">
+          返回购物中心
+        </router-link>
+      </el-menu-item>
       <el-menu-item index="2">注销登录</el-menu-item>
       <el-menu-item index="3">
         <router-link to="/merchantMain">
@@ -85,7 +89,6 @@
 </template>
 
 <script>
-  import MerchantMain from "./MerchantMain";
 
   export default {
     name: "merchant",
@@ -122,7 +125,6 @@
       }
     },
     components: {
-      "merchantMain": MerchantMain
     },
     created: function () {
       this.getStoreData();

@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import App from './App.vue'
 import Element from 'element-ui'
+import Echarts from 'echarts'
 import 'element-ui/lib/theme-chalk/index.css'
 import Axios from 'axios'
 import Router from '../router/routercomfig.js'
@@ -16,6 +17,7 @@ Axios.defaults.baseURL = "http://localhost:8080/shop/"
 Vue.prototype.$axios = Axios
 
 
+
 var vue1=new Vue({
   el: '#app',
   render: h => h(App),
@@ -25,5 +27,5 @@ var vue1=new Vue({
 
 //默认地址
 vue1.$router.replace({
-  path: '/merchantMain',
+  path: '/mainPage',
 })

@@ -9,6 +9,7 @@
     export default {
         name: "MerchantIncome"
     }
+
 </script>
 
 <style scoped>
