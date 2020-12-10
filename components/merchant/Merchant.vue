@@ -1,3 +1,4 @@
+<!--商户中心-->
 <template>
   <div>
     <!--头部菜单-->
@@ -7,21 +8,13 @@
       background-color="#545c64"
       text-color="#fff"
       active-text-color="#ffd04b">
-      <el-menu-item index="1">处理中心</el-menu-item>
-      <el-submenu index="2">
-        <template slot="title">我的工作台</template>
-        <el-menu-item index="2-1">选项1</el-menu-item>
-        <el-menu-item index="2-2">选项2</el-menu-item>
-        <el-menu-item index="2-3">选项3</el-menu-item>
-        <el-submenu index="2-4">
-          <template slot="title">选项4</template>
-          <el-menu-item index="2-4-1">选项1</el-menu-item>
-          <el-menu-item index="2-4-2">选项2</el-menu-item>
-          <el-menu-item index="2-4-3">选项3</el-menu-item>
-        </el-submenu>
-      </el-submenu>
-      <el-menu-item index="3" disabled>消息中心</el-menu-item>
-      <el-menu-item index="4"><a href="https://www.ele.me" target="_blank">订单管理</a></el-menu-item>
+      <el-menu-item index="1">返回购物中心</el-menu-item>
+      <el-menu-item index="2">注销登录</el-menu-item>
+      <el-menu-item index="3">
+        <router-link to="/merchantMain">
+          商户首页
+        </router-link>
+      </el-menu-item>
     </el-menu>
 
     <!--主体部分-->
@@ -35,10 +28,18 @@
           </span>
           <br>
           <!--这里是商户图片-->
-          <el-avatar  :size="80" :src="store.photo" :key="store.photo"></el-avatar>
-         <br>
+          <router-link to="/merchantInfo">
+            <el-avatar :size="80" :src="store.photo" :key="store.photo"></el-avatar>
+          </router-link>
+
+          <br>
+          <!--这里是设置-->
           <span>
-              <i class="el-icon-setting"></i>
+            <!--路由地址-->
+             <router-link to="/merchantInfo">
+               <i class="el-icon-setting"></i>
+             </router-link>
+
           </span>
           <!--<el-image :src="'./image/'+store.photo" style="height: 60px">
           </el-image>-->
@@ -48,41 +49,52 @@
            <i :class="icon"></i>
          </el-button>-->
         <el-menu default-active="1-4-1" class="el-menu-vertical-demo" :collapse="isCollapse">
-          <el-submenu index="1">
-            <template slot="title">
-              <i class="el-icon-location"></i>
-              <span slot="title">导航一</span>
-            </template>
-          </el-submenu>
-          <el-menu-item index="2">
-            <i class="el-icon-menu"></i>
-            <span slot="title">导航二</span>
-          </el-menu-item>
-          <el-menu-item index="3" disabled>
+          <el-menu-item index="1">
             <i class="el-icon-document"></i>
-            <span slot="title">导航三</span>
+            <span slot="title">
+              <router-link to="/merchantOrder">
+               我的订单
+              </router-link>
+            </span>
           </el-menu-item>
-          <el-menu-item index="4">
-            <i class="el-icon-setting"></i>
-            <span slot="title">导航四</span>
+          <el-menu-item index="2">
+            <i class="el-icon-document"></i>
+            <span slot="title">团队订单</span>
+          </el-menu-item>
+          <el-menu-item index="3">
+            <i class="el-icon-document"></i>
+            <span slot="title">
+              <router-link to="/merchantIncome">
+              我的收入
+              </router-link>
+            </span>
           </el-menu-item>
         </el-menu>
       </div>
 
       <!--主体内容-->
-      <el-main>Main</el-main>
+      <el-main>
+        <!--路由展示-->
+        <router-view>
+
+        </router-view>
+
+      </el-main>
     </el-container>
   </div>
 </template>
 
 <script>
+  import MerchantMain from "./MerchantMain";
+
   export default {
     name: "merchant",
     data() {
       return {
         isCollapse: false, //初始打开菜单
         icon: "el-icon-s-fold", //折叠按钮图标
-        store:{},
+        store: {},
+        display: "block" //block
       }
     },
     methods: {
@@ -99,17 +111,20 @@
       },
       //获取商户数据
       getStoreData() {
-        var _this=this;
-        this.$axios.get("queryStoreByUid.action?uid="+1)
+        var _this = this;
+        this.$axios.get("queryStoreByUid.action?uid=" + 1)
           .then(function (result) {
-            _this.store=result.data;
+            _this.store = result.data;
           })
           .catch(function (error) {
             alert(error)
           })
       }
     },
-    created:function () {
+    components: {
+      "merchantMain": MerchantMain
+    },
+    created: function () {
       this.getStoreData();
     }
   }
@@ -122,7 +137,7 @@
   }
 
   .el-header {
-    background-color: #fadb05;
+    background-color: aliceblue;
     color: #333;
     text-align: center;
     line-height: 60px;

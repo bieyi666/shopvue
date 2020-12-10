@@ -5,7 +5,7 @@
 </template>
 
 <script>
-  import Merchant from '../components/merchant/merchant'
+  import Merchant from '../components/merchant/Merchant.vue'
 export default {
   name: 'app',
   data () {
