@@ -1,5 +1,6 @@
 <template>
   <div>
+    <a></a>
     <!--头部菜单-->
     <el-menu
       :default-active="activeIndex2"
