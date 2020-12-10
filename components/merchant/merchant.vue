@@ -2,10 +2,8 @@
   <div>
     <!--头部菜单-->
     <el-menu
-      :default-active="activeIndex2"
       class="el-menu-demo"
       mode="horizontal"
-      @select="handleSelect"
       background-color="#545c64"
       text-color="#fff"
       active-text-color="#ffd04b">
@@ -32,11 +30,18 @@
       <div>
         <el-header style="height: 250px;text-align: center">
           <!--这里是商户名称-->
-          <span>11</span>
+          <span>
+          {{store.name}}
+          </span>
           <br>
           <!--这里是商户图片-->
-          <el-image src="./image/logo.png" style="height: 60px">
-          </el-image>
+          <el-avatar  :size="80" :src="store.photo" :key="store.photo"></el-avatar>
+         <br>
+          <span>
+              <i class="el-icon-setting"></i>
+          </span>
+          <!--<el-image :src="'./image/'+store.photo" style="height: 60px">
+          </el-image>-->
         </el-header>
         <!--左 菜单折叠按钮-->
         <!-- <el-button @click="handle">
@@ -76,7 +81,8 @@
     data() {
       return {
         isCollapse: false, //初始打开菜单
-        icon: "el-icon-s-fold"
+        icon: "el-icon-s-fold", //折叠按钮图标
+        store:{},
       }
     },
     methods: {
@@ -91,6 +97,20 @@
         }
 
       },
+      //获取商户数据
+      getStoreData() {
+        var _this=this;
+        this.$axios.get("queryStoreByUid.action?uid="+1)
+          .then(function (result) {
+            _this.store=result.data;
+          })
+          .catch(function (error) {
+            alert(error)
+          })
+      }
+    },
+    created:function () {
+      this.getStoreData();
     }
   }
 </script>
