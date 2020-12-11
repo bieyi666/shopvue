@@ -6,13 +6,27 @@ import VueRouter from 'vue-router'
 /*主*/
 import MainPage from '../components/home/MainPage.vue'
 import Merchant from '../components/merchant/Merchant.vue'
+
+
+//用户中心
 import UserCenter from "../components/user/UserCenter";
+//个人中心
+import MineCenter from "../components/user/child/MineCenter";
+//账号信息
+import AccountInfo from "../components/user/child/AccountInfo.vue";
+//账号安全
+//地址管理
+import AddressManagement from "../components/user/child/AddressManagement.vue";
+
+
 
 /*子*/
 import MerchantInfo from '../components/merchant/MerchantInfo.vue'
 import MerchantMain from '../components/merchant/MerchantMain.vue'
 import MerchantOrder from '../components/merchant/MerchantOrder.vue'
 import MerchantIncome from '../components/merchant/MerchantIncome.vue'
+
+
 
 
 //Vue组件使用Vue-router组件   mark
@@ -28,9 +42,25 @@ var routes = [
   },
   {
     //用户中心
-    path: '/userCenter', component: UserCenter,
+    path: '/userCenter', component: UserCenter,redirect:'/mineCenter',
     //用户子理由
-    children:[]
+    children:[
+      {
+        //个人中心
+        path: '/mineCenter',
+        component: MineCenter
+      },
+      {
+        //账号信息
+        path: '/accountInfo',
+        component: AccountInfo
+      },
+      {
+        //地址管理
+        path: '/addressManagement',
+        component: AddressManagement
+      }
+    ]
   },
   {
     //商户中心
