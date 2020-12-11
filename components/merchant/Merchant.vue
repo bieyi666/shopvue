@@ -1,5 +1,6 @@
 <!--商户中心-->
 <template>
+
   <div>
     <!--头部菜单-->
     <el-menu
@@ -21,70 +22,82 @@
       </el-menu-item>
     </el-menu>
 
-    <!--主体部分-->
-    <el-container>
-      <!-- 左边菜单-->
-      <div>
-        <el-header style="height: 250px;text-align: center">
-          <!--这里是商户名称-->
-          <span>
+    <el-row :gutter="20">
+      <el-col :span="16" :offset="4">
+        <div class="grid-content bg-purple">
+
+
+          <!--主体部分-->
+          <el-container>
+            <!-- 左边菜单-->
+            <div>
+              <el-header style="height: 250px;text-align: center">
+                <!--这里是商户名称-->
+                <span>
           {{store.name}}
           </span>
-          <br>
-          <!--这里是商户图片-->
-          <router-link to="/merchantInfo">
-            <el-avatar :size="80" :src="store.photo" :key="store.photo"></el-avatar>
-          </router-link>
+                <br>
+                <!--这里是商户图片-->
+                <router-link to="/merchantInfo">
+                  <el-avatar :size="80" :src="store.photo" :key="store.photo"></el-avatar>
+                </router-link>
 
-          <br>
-          <!--这里是设置-->
-          <span>
+                <br>
+                <!--这里是设置-->
+                <span>
             <!--路由地址-->
              <router-link to="/merchantInfo">
                <i class="el-icon-setting"></i>
              </router-link>
 
           </span>
-          <!--<el-image :src="'./image/'+store.photo" style="height: 60px">
-          </el-image>-->
-        </el-header>
-        <!--左 菜单折叠按钮-->
-        <!-- <el-button @click="handle">
-           <i :class="icon"></i>
-         </el-button>-->
-        <el-menu default-active="1-4-1" class="el-menu-vertical-demo" :collapse="isCollapse">
-          <el-menu-item index="1">
-            <i class="el-icon-document"></i>
-            <span slot="title">
+                <!--<el-image :src="'./image/'+store.photo" style="height: 60px">
+                </el-image>-->
+              </el-header>
+              <!--左 菜单折叠按钮-->
+              <!-- <el-button @click="handle">
+                 <i :class="icon"></i>
+               </el-button>-->
+              <el-menu default-active="1-4-1" class="el-menu-vertical-demo" :collapse="isCollapse">
+                <el-menu-item index="1">
+                  <i class="el-icon-document"></i>
+                  <span slot="title">
               <router-link to="/merchantOrder">
                我的订单
               </router-link>
             </span>
-          </el-menu-item>
-          <el-menu-item index="2">
-            <i class="el-icon-document"></i>
-            <span slot="title">团队订单</span>
-          </el-menu-item>
-          <el-menu-item index="3">
-            <i class="el-icon-document"></i>
-            <span slot="title">
+                </el-menu-item>
+                <el-menu-item index="2">
+                  <i class="el-icon-document"></i>
+                  <span slot="title">团队订单</span>
+                </el-menu-item>
+                <el-menu-item index="3">
+                  <i class="el-icon-document"></i>
+                  <span slot="title">
               <router-link to="/merchantIncome">
               我的收入
               </router-link>
             </span>
-          </el-menu-item>
-        </el-menu>
+                </el-menu-item>
+              </el-menu>
+            </div>
+
+            <!--主体内容-->
+            <el-main>
+              <!--路由展示-->
+              <router-view>
+
+              </router-view>
+
+            </el-main>
+          </el-container>
+
+
       </div>
+      </el-col>
+    </el-row>
 
-      <!--主体内容-->
-      <el-main>
-        <!--路由展示-->
-        <router-view>
 
-        </router-view>
-
-      </el-main>
-    </el-container>
   </div>
 </template>
 
@@ -150,6 +163,11 @@
     color: #333;
     text-align: center;
     line-height: 160px;
+  }
+
+  /*导航菜单*/
+  .el-menu-demo {
+    min-height: 100px;
   }
 
 
