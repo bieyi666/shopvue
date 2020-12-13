@@ -14,6 +14,10 @@
     </div>
     <!--    个人信息主体-->
 
+<!--更换头像div-->
+<div style="display: none">
+</div>
+
     <div id="accountinfo_div" style="">
       <!--      form表单div-->
       <div style="padding-top: 50px;padding-left: 40px">
@@ -24,18 +28,21 @@
             <el-input v-model="form.photo" style="display: none"></el-input>
             <div class="accountinfo_form_input">
               <el-avatar :size="100" :src="form.photo"></el-avatar>
+              <a style="font-size: large">
+              <i class="el-icon-edit el-avatar--large"></i>
+              </a>
             </div>
 
 <!--            用户idform-->
           </el-form-item>
           <el-form-item label="用户id">
-            <el-input v-model="form.uId" style="display: none"></el-input>
-            <label class="accountinfo_form_input">{{form.uId}}</label>
+            <el-input v-model="form.uid" style="display: none"></el-input>
+            <label class="accountinfo_form_input">{{form.uid}}</label>
           </el-form-item>
 
 <!--          用户名form-->
           <el-form-item label="用户名">
-            <el-input class="accountinfo_form_input" v-model="form.uName" style="width: 200px"></el-input>
+            <el-input class="accountinfo_form_input" v-model="form.uname" style="width: 200px"></el-input>
           </el-form-item>
 
 <!--          手机号form-->
@@ -59,19 +66,47 @@
     name: "AccountInfo",
     data() {
       return {
-        form: {
-          "uId": "1",
-          "uName": "贺灿",
-          "phone": "110",
-          "password": "110",
-          "photo": "./src/assets/image/1601080951299.jpg"
-        }
+        form: {},
+        imageUrl: ''
       }
     },
     methods: {
+      //获取用户信息
+      getUserData() {
+        var _this = this;
+        this.$axios.get("queryUserInfo.action?uid=" + 2)
+          .then(function (result) {
+            _this.form = result.data;
+          })
+          .catch(function (error) {
+            alert(error)
+          })
+      },
       onSubmit() {
-        alert('submit!');
+        var _this = this;
+        var params = new URLSearchParams();
+        params.append("uid", _this.form.uid);
+        params.append("uName", _this.form.uname);
+        params.append("phone", _this.form.phone);
+        params.append("password", _this.form.password);
+        params.append("photo", _this.form.photo);
+
+
+
+        this.$axios.post("editUserInfo.action",params)
+          .then(function (result) {
+            if(result.data==1){
+              alert("修改成功")
+            }
+          })
+          .catch(function (error) {
+            alert(error)
+          })
       }
+
+    },
+    created: function () {
+      this.getUserData();
     }
   }
 </script>

@@ -6,7 +6,7 @@
         <!--            头像-->
         <el-avatar :size="100" :src="Users.photo"></el-avatar>
         <!--            昵称-->
-        <label>{{Users.uName}}</label>
+        <label>{{Users.uname}}</label>
       </div>
     </div>
 
@@ -15,10 +15,10 @@
       <!--         未完成订单头部标题-->
       <div style="height: 40px;border: 0px ;background: #f4f4f4">
         <el-row>
-          <el-col span="4" offset="1" style="margin-top: 9px">
+          <el-col :span="4" :offset="1" style="margin-top: 9px">
             未完成订单
           </el-col>
-          <el-col span="4" offset="15" style="margin-top: 9px">
+          <el-col :span="4" :offset="15" style="margin-top: 9px">
             <a href="#" style="font-size: 14px">查看全部订单</a>
           </el-col>
         </el-row>
@@ -45,16 +45,25 @@
     name: "MineCenter",
     data() {
       return {
-        Users:
-          {
-            "uId": "1",
-            "uName": "贺灿",
-            "phone": "110",
-            "password": "110",
-            "photo": "./src/assets/image/1601080951299.jpg"
-          }
+        Users: {}
 
       }
+    },
+    methods: {
+      //获取用户信息
+      getUserData() {
+        var _this = this;
+        this.$axios.get("queryUserInfo.action?uid=" + 2)
+          .then(function (result) {
+            _this.Users = result.data;
+          })
+          .catch(function (error) {
+            alert(error)
+          })
+      }
+    },
+    created: function () {
+      this.getUserData();
     }
   }
 </script>
