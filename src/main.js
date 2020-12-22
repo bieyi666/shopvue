@@ -1,13 +1,11 @@
 import Vue from 'vue'
 import App from './App.vue'
 import Element from 'element-ui'
-import Echarts from 'echarts'
 import 'element-ui/lib/theme-chalk/index.css'
 import Axios from 'axios'
 import Router from '../router/routercomfig.js'
-import VuePhotoZoomPro from 'vue-photo-zoom-pro'
 
-Vue.use(VuePhotoZoomPro)
+import 'lib-flexible/flexible.js'
 
 Vue.use(Element)
 

@@ -362,11 +362,7 @@
             type: 'error'
           });
         }else {
-          this.$message({
-            showClose: true,
-            message: '跳了',
-            type: 'success'
-          });
+         this.$router.push("/userCenter")
         }
       }
     },
