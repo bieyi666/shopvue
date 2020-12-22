@@ -1,14 +1,105 @@
 <!--商户信息-->
 <template>
   <div>
-      这里是商户个人信息维护
+    <el-form :model="storeFrom" status-icon :rules="rules" ref="storeFrom" label-width="100px" class="demo-storeFrom">
+      <el-form-item label="名称" prop="name">
+        <el-input type="text" v-model="storeFrom.name" autocomplete="off"></el-input>
+      </el-form-item>
+      <el-form-item label="手机号" prop="phone">
+        <el-input type="text" v-model="storeFrom.phone" autocomplete="off"></el-input>
+      </el-form-item>
+      <el-form-item label="地址" prop="address">
+        <el-input disabled v-model="storeFrom.address"></el-input>
+      </el-form-item>
+      <el-form-item label="店铺图片" :label-width="labelWidth">
+        <input type="file" @change="getFile($event)">
+      </el-form-item>
+      <el-form-item>
+        <el-button type="primary" @click="submitForm('storeFrom')">提交</el-button>
+      </el-form-item>
+    </el-form>
   </div>
 </template>
 
 <script>
-    export default {
-        name: "MerchantInfo"
+  export default {
+    name: "MerchantInfo",
+    data() {
+      return {
+        labelWidth: '120px',
+        storeFrom: {
+          storeId: '',
+          uId: '',
+          name: '',
+          phone: '',
+          address: '',
+          photo: '',
+          state: '',
+          msg: '',
+          image:''
+        },
+        rules: {
+          image: [{
+            required: true, //是否必填
+            message: '图片不能为空', //规则提示
+            trigger: 'blur' //何事件触发
+          }],
+        }
+      }
+    },
+    methods: {
+      submitForm(formName) {
+        var _this = this;
+        this.$refs[formName].validate((valid) => {
+          if (valid) {
+            /*//阻止元素发生默认的行为
+            event.preventDefault();*/
+            let formData = new FormData();
+            // formData.append("img",this.addform.img);
+            //将需要提交的表单数据 快速组装为H5定义的类型FormData
+            Object.keys(_this.storeFrom).forEach((key) => {
+              formData.append(key, _this.storeFrom[key]);
+            });
+
+            //此处使用原生的axios，因为文件提交 要设置 类型Content-Type=multipart/form-data，切记，需要post提交
+            //此处axios原生类似于 jquery的 原生  $.ajax 和 $.get  $.post
+            this.$axios({
+              method: 'post',
+              url: 'updateStoreInfoBySid.action',
+              data: formData,
+              headers: {
+                'Content-Type': 'multipart/form-data'
+              }
+            })
+              .then(function (response) {
+                _this.$message({
+                  message: response.data,
+                  type: 'success'
+                });
+                _this.$router.push("/merchant");
+              })
+              .catch(function (error) {
+                alert("上传失败");
+                console.log(error);
+              });
+
+
+          } else {
+            console.log('error submit!!');
+            return false;
+          }
+        });
+      },
+      getFile: function (event) {  //文件每次选中，触发此方法  将选中的文件内容填充到addform中的img  后台通过img获取文件内容
+        this.storeFrom.image = event.target.files[0];
+        this.storeFrom.photo = event.target.files[0].name;
+      }
+
+    },
+    created() {
+      this.storeFrom = this.$route.query.store;
     }
+  }
 </script>
 
 <style scoped>

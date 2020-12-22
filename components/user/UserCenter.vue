@@ -55,7 +55,10 @@
             <div>
               <ul class="bd">
                 <li>
-                  <a href="#">成为商户</a>
+                  <router-link to="/merchant">
+                    成为商户
+                  </router-link>
+                  <!--<a href="#"></a>-->
                 </li>
                 <li>
                   <a href="#">客服</a>

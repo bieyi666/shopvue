@@ -16,12 +16,12 @@
     name: "MainPage",
     data() {
       return {
-        onLine: navigator.onLine,
+
       }
     },
   }
-
 </script>
+
 
 <style>
 

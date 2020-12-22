@@ -42,7 +42,7 @@ var routes = [
   },
   {
     //用户中心
-    path: '/userCenter', component: UserCenter,redirect:'/mineCenter',
+      path: '/userCenter', component: UserCenter,redirect:'/mineCenter',
     //用户子理由
     children:[
       {
