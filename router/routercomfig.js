@@ -5,9 +5,19 @@ import VueRouter from 'vue-router'
 //导入子组件
 /*主*/
 import MainPage from '../components/home/MainPage.vue'
-import Merchant from '../components/merchant/Merchant.vue'
+//子
+import Login from "../components/home/Login";
+import Register from "../components/home/Register";
 
 
+//主
+/*import Login from '../components/home/Login.vue'*/
+
+
+
+
+//商品详情
+import MainDetailed from "../components/home/MainDetailed";
 //用户中心
 import UserCenter from "../components/user/UserCenter";
 //个人中心
@@ -18,14 +28,13 @@ import AccountInfo from "../components/user/child/AccountInfo.vue";
 //地址管理
 import AddressManagement from "../components/user/child/AddressManagement.vue";
 
-
-
+//主
+import Merchant from '../components/merchant/Merchant.vue'
 /*子*/
 import MerchantInfo from '../components/merchant/MerchantInfo.vue'
 import MerchantMain from '../components/merchant/MerchantMain.vue'
 import MerchantOrder from '../components/merchant/MerchantOrder.vue'
 import MerchantIncome from '../components/merchant/MerchantIncome.vue'
-
 
 
 
@@ -37,14 +46,36 @@ var routes = [
   {
     //首页
     path: '/mainPage', component: MainPage,
+    /*redirect:'/login',*/
     //首页子路由
-    children:[]
+    children: [
+      {
+        //登录
+        path: '/login',
+        component: Login
+      },
+      {
+        //注册
+        path: '/register',
+        component: Register
+      }
+    ]
   },
   {
+    path: '/mainDetailed',component: MainDetailed
+  },
+/*  {
+    //登录
+    path: '/login', component: Login,
+    //首页子路由
+    children: [
+    ]
+  },*/
+  {
     //用户中心
-      path: '/userCenter', component: UserCenter,redirect:'/mineCenter',
+    path: '/userCenter', component: UserCenter, redirect: '/mineCenter',
     //用户子理由
-    children:[
+    children: [
       {
         //个人中心
         path: '/mineCenter',
@@ -64,7 +95,7 @@ var routes = [
   },
   {
     //商户中心
-    path: '/merchant', component: Merchant,redirect:'/merchantMain',
+    path: '/merchant', component: Merchant, redirect: '/merchantMain',
     //商户子路由
     children: [
       {
@@ -85,6 +116,7 @@ var routes = [
       }
     ]
   },
+
 ]
 
 
