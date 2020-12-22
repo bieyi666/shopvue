@@ -3,8 +3,10 @@
 
     <div style="border: 1px solid #eaeaea;height: 230px ;background-image: linear-gradient(white, rgb(245,240,228))">
       <div class="avatar" style="margin-left: 70px;margin-top: 90px">
-        <!--            头像-->
-        <el-avatar :size="100" :src="Users.photo"></el-avatar>
+<!--        &lt;!&ndash;            头像&ndash;&gt;{{$host+Users.photo}}-->
+<!--        <el-avatar :src="$host" :xp="$host+Users.photo"></el-avatar>-->
+
+        <img :src="$host+Users.photo" style="width: 100px;height: 100px;border-radius:50%">
         <!--            昵称-->
         <label>{{Users.uname}}</label>
       </div>
@@ -45,6 +47,7 @@
     name: "MineCenter",
     data() {
       return {
+        usersId: sessionStorage.getItem('uid'),
         Users: {}
 
       }
@@ -53,9 +56,11 @@
       //获取用户信息
       getUserData() {
         var _this = this;
-        this.$axios.get("queryUserInfo.action?uid=" + 2)
+        this.$axios.get("queryUserInfo.action?uid=" + _this.usersId)
           .then(function (result) {
+            // alert(result.data.photo)
             _this.Users = result.data;
+            // _this.Users.photo = _this.Users.photo
           })
           .catch(function (error) {
             alert(error)

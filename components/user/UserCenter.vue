@@ -6,6 +6,7 @@
         <!--        个人中心logo-->
         <el-col :span="2" :offset="4" style="margin-top: 35px">
           <label style="font-size: 24px">哥谭市</label>
+
         </el-col><!--          标题logo结束-->
 
         <el-col :span="2" style="margin-top: 35px">
@@ -55,10 +56,7 @@
             <div>
               <ul class="bd">
                 <li>
-                  <router-link to="/merchant">
-                    成为商户
-                  </router-link>
-                  <!--<a href="#"></a>-->
+                  <router-link to="/storeApply">成为商户</router-link>
                 </li>
                 <li>
                   <a href="#">客服</a>
@@ -94,7 +92,20 @@
       }
     },
     methods: {
-
+      // LoginTest() {
+      //   var _this = this;
+      //   this.$axios.get("userLoginTest.action")
+      //     .then(function (result) {
+      //       sessionStorage.setItem("userid",result.data.userId);
+      //       sessionStorage.setItem("username",result.data.username);
+      //     })
+      //     .catch(function (error) {
+      //       alert(error)
+      //     })
+      // }
+    },
+    created: function () {
+      // this.LoginTest();
     }
   }
 

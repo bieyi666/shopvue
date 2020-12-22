@@ -27,7 +27,8 @@ import AccountInfo from "../components/user/child/AccountInfo.vue";
 //账号安全
 //地址管理
 import AddressManagement from "../components/user/child/AddressManagement.vue";
-
+//注册商户
+import StoreApply from "../components/user/child/StoreApply.vue";
 //主
 import Merchant from '../components/merchant/Merchant.vue'
 /*子*/
@@ -90,6 +91,11 @@ var routes = [
         //地址管理
         path: '/addressManagement',
         component: AddressManagement
+      },
+      {
+        //地址管理
+        path: '/storeApply',
+        component: StoreApply
       }
     ]
   },
