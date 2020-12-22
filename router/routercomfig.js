@@ -10,12 +10,6 @@ import Login from "../components/home/Login";
 import Register from "../components/home/Register";
 
 
-//主
-/*import Login from '../components/home/Login.vue'*/
-
-
-
-
 //商品详情
 import MainDetailed from "../components/home/MainDetailed";
 //用户中心
