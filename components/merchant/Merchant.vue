@@ -131,12 +131,13 @@
                             style="width: 100%;height: 100%;border-radius: 10px"></el-image>
                 </div>
                 <div>
+                  <!--路由展示-->
                   <router-view>
 
                   </router-view>
 
                 </div>
-                <!--路由展示-->
+
 
 
               </el-main>
@@ -225,7 +226,6 @@
     background-color: #E9EEF3;
     color: #333;
     text-align: center;
-    line-height: 160px;
   }
 
   /*导航菜单*/
