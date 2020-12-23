@@ -47,7 +47,7 @@
             <div>
               <ul class="bd">
                 <li>
-                  <a href="#">订单管理</a>
+                  <router-link to="/myOrderInfo">订单管理</router-link>
                 </li>
               </ul>
             </div>
@@ -56,7 +56,8 @@
             <div>
               <ul class="bd">
                 <li>
-                  <router-link to="/storeApply">成为商户</router-link>
+                  <router-link to="/storeApply" :class="{'storeApplysty':display1}">成为商户</router-link>
+                  <router-link to="/Merchant" :class="{'Merchantsty':display2}">商户主页</router-link>
                 </li>
                 <li>
                   <a href="#">客服</a>
@@ -88,34 +89,48 @@
     name: 'UserCenter',
     data() {
       return {
-        data: {}
+        usersId: sessionStorage.getItem('uid'),
+        display1: true,
+        display2: true
       }
     },
     methods: {
-      // LoginTest() {
-      //   var _this = this;
-      //   this.$axios.get("userLoginTest.action")
-      //     .then(function (result) {
-      //       sessionStorage.setItem("userid",result.data.userId);
-      //       sessionStorage.setItem("username",result.data.username);
-      //     })
-      //     .catch(function (error) {
-      //       alert(error)
-      //     })
-      // }
+      pdStore() {
+        var _this = this;
+        this.$axios.get("pdStore.action?uid=" + _this.usersId)
+          .then(function (result) {
+            if(result.data.name===undefined){
+              _this.display1=false;
+              _this.display2=true;
+            }else {
+              _this.display1=true;
+              _this.display2=false;
+            }
+          })
+          .catch(function (error) {
+            alert(error)
+          })
+      }
     },
     created: function () {
-      // this.LoginTest();
+      this.pdStore();
     }
   }
 
-  //  左侧菜单a标签点击事件
-
-  //   #CC9756   border-left-color: #BEA988;
 
 </script>
 
 <style>
+
+  .storeApplysty{
+    display: none;
+  }
+  .Merchantsty{
+    display: none;
+  }
+
+
+
   /*消除html的内边距和外边距*/
   * {
     padding: 0; /*清除内边距*/

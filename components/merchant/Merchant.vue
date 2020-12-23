@@ -159,6 +159,7 @@
     name: "merchant",
     data() {
       return {
+        usersId: sessionStorage.getItem('uid'),
         isCollapse: false, //初始打开菜单
         icon: "el-icon-s-fold", //折叠按钮图标
         store: {},
@@ -180,7 +181,7 @@
       //获取商户数据
       getStoreData() {
         var _this = this;
-        this.$axios.get("queryStoreByUid.action?uid=" + 1)
+        this.$axios.get("queryStoreByUid.action?uid="+ _this.usersId)
           .then(function (result) {
             _this.store = result.data;
           })

@@ -120,7 +120,7 @@
         //提交要修改的信息
         this.$axios({
           method: 'post',
-          url: 'qeditUserInfo.action',
+          url: 'QeditUserInfo.action',
           data: formData,
           headers: {
             'Content-Type': 'multipart/form-data'
