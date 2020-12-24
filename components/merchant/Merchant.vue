@@ -104,13 +104,18 @@
                   <i class="el-icon-document"></i>
                   <span slot="title">
                   <router-link to="/merchantOrder">
-                   我的订单
+                   团队订单
                   </router-link>
                   </span>
                 </el-menu-item>
                 <el-menu-item index="2">
                   <i class="el-icon-document"></i>
-                  <span slot="title">团队订单</span>
+                  <span slot="title">
+                    <router-link to="/testECharts">
+                      测试ECharts
+                    </router-link>
+
+                  </span>
                 </el-menu-item>
                 <el-menu-item index="3">
                   <i class="el-icon-document"></i>

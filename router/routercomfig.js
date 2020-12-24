@@ -23,13 +23,18 @@ import AccountInfo from "../components/user/child/AccountInfo.vue";
 import AddressManagement from "../components/user/child/AddressManagement.vue";
 //注册商户
 import StoreApply from "../components/user/child/StoreApply.vue";
-//主
+
+
+/**
+ * 商户
+ */
 import Merchant from '../components/merchant/Merchant.vue'
 /*子*/
 import MerchantInfo from '../components/merchant/MerchantInfo.vue'
 import MerchantMain from '../components/merchant/MerchantMain.vue'
 import MerchantOrder from '../components/merchant/MerchantOrder.vue'
 import MerchantIncome from '../components/merchant/MerchantIncome.vue'
+import TestECharts from "../components/merchant/TestECharts";
 
 
 
@@ -113,6 +118,10 @@ var routes = [
       {
         path: '/merchantIncome',
         component: MerchantIncome
+      },
+      {
+        path: '/testECharts',
+        component: TestECharts
       }
     ]
   },
