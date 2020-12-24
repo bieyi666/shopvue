@@ -7,7 +7,7 @@
           <el-row>
             <el-col :span="14">
               <el-row align="middle">
-                <el-col :span="5">&emsp;</el-col>
+                <el-col :span="5">aa</el-col>
                 <el-col :span="18">
                   <i class="el-icon-loading" style="color: khaki;margin-top: 10px">
 
@@ -34,7 +34,7 @@
                         &emsp;| &emsp;</a>
                     </il>
                     <il>
-                      <a href="#" @click="myorder" style="color: #ccc;font-size: 10px;text-decoration:none;">个人中心 &emsp;| &emsp;</a>
+                      <a href="#" @click="myorder" style="color: #ccc;font-size: 10px;text-decoration:none;">我的订单 &emsp;| &emsp;</a>
                     </il>
                     <il>
                       <a href="#" style="color: #ccc;font-size: 10px;text-decoration:none;">客服 &emsp;| &emsp;</a>
@@ -83,7 +83,7 @@
                   <el-input placeholder="请输入内容" v-model="input1" class="aaa"
                             style="outline: none;background-color: #ffffff;border-color: #DCDFE6">
                     <el-button slot="append"
-                               style="border-color: #ffffff;background-color: #ffffff;" @click="queyrCid">
+                               style="border-color: #ffffff;background-color: #ffffff;">
                       <i class="el-icon-search"></i>
                     </el-button>
                   </el-input>
@@ -234,9 +234,8 @@
 
     <!--    登录-->
     <el-dialog
-      class="dialog"
       :visible.sync="dialogVisible"
-      width="50%"
+      width="30%"
       :before-close="handleClose"
       center>
       <span>
@@ -306,7 +305,6 @@
       //注销
       logout() {
         sessionStorage.removeItem("username");  //从浏览器session清空数据
-        sessionStorage.removeItem("userid");
         this.show = !this.show;
         this.shoa = !this.shoa;
         this.$message({
@@ -345,13 +343,6 @@
         sessionStorage.setItem("cid",cid);
         this.$router.push("/mainDetailed")
       },
-      //查询商品
-      //点击查询带名字调整页面
-      queyrCid(){
-        var cname=this.input1
-        sessionStorage.setItem("cname",cname);
-        this.$router.push("/goodsquery")
-      },
       //页面进来判断是否登录
       EF(){
         var ca=sessionStorage.getItem("username");
@@ -360,7 +351,7 @@
           this.shoa=false;
         }
       },
-      //点击个人中心查询是否登录
+      //点击登录查询是否登录
       myorder(){
         var username=sessionStorage.getItem("username");
         //判断是否为空
@@ -371,11 +362,14 @@
             type: 'error'
           });
         }else {
-         this.$router.push("/userCenter")
+          this.$message({
+            showClose: true,
+            message: '跳了',
+            type: 'success'
+          });
         }
       }
     },
-    //挂钩子
     created() {
       this.EF();
       this.getAllCommodityAK();
@@ -388,12 +382,7 @@
 
 <style>
   /* 三种方法选择自己喜欢的一个即可 */
-  .dialog .el-dialog {
-    background-image: url(http://localhost:8080/shop/img/30.png);
-    background-size: 120%;
-    padding: 10px;
-    height: 400px;
-  }
+
   .el-input--small .el-input__inner {
     border: none;
   }

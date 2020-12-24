@@ -1,3 +1,4 @@
+<!--登录页面-->
 <template>
   <div>
 <!--    <el-image src="./src/assets/image/login.jpg">-->
@@ -66,8 +67,10 @@
       login(){
         if (this.$route.path === "/login"){
           this.$router.push("/register");
-        }else {
+        }else if(this.$route.path === "/logis"){
           this.$router.push("/registers");
+        }else {
+          this.$router.push("/registera");
         }
 
       },

@@ -79,8 +79,10 @@
       login(){
         if (this.$route.path === "/register"){
           this.$router.push("/login");
-        }else {
+        }else if(this.$route.path === "/registers") {
           this.$router.push("/logins");
+        }else {
+          this.$router.push("/logina");
         }
 
       },
