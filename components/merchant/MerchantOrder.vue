@@ -1,6 +1,21 @@
 <!--商户订单-->
 <template>
   <div>
+
+    <div class="block">
+      <!--      <span class="demonstration">起始日期时刻为 12:00:00，结束日期时刻为 08:00:00</span>-->
+      <el-date-picker
+        format="yyyy 年 MM 月 dd 日 hh 时:mm分:ss秒"
+        value-format="yyyy-MM-dd hh:mm:ss"
+        v-model="value2"
+        type="datetimerange"
+        align="right"
+        start-placeholder="开始日期"
+        end-placeholder="结束日期"
+        :default-time="['12:00:00', '08:00:00']">
+      </el-date-picker>
+    </div>
+
     <el-table
       :data="tableData"
       style="width: 100%">
@@ -111,12 +126,13 @@
             placeholder="输入关键字搜索"/>
 
         </template>
-        <template slot-scope="scope" >
+        <template slot-scope="scope">
           <div v-if="scope.row.state1 === 1 && scope.row.state2 === 0">
             <el-button
               size="mini"
               type="danger"
-              @click="handleDelete(scope.$index, scope.row)">确认送达</el-button>
+              @click="handleDelete(scope.$index, scope.row)">确认送达
+            </el-button>
           </div>
 
         </template>
@@ -131,7 +147,10 @@
     data() {
       return {
         tableData: [],
-        search: ''
+        search: '',
+        value2: '',
+        orderTime1:null,
+        orderTime2:null
       }
     },
     methods: {
@@ -140,6 +159,7 @@
         var _this = this;
         var params = new URLSearchParams();
         params.append("storeid", 1);
+        //params.append("orderTime1",this.value2)
         this.$axios.get("queryAllOrderInfoBySid.action", {
           params
         }).then(function (result) {
@@ -151,6 +171,13 @@
     },
     created() {
       this.getOrderData();
+    },
+    watch: {
+      value2: function (newval) {
+        for (var i=0 ;i <newval.length;i++){
+         this.orderTime=newval[i];
+        }
+      }
     }
 
   }
