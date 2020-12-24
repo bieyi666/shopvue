@@ -306,6 +306,7 @@
       //注销
       logout() {
         sessionStorage.removeItem("username");  //从浏览器session清空数据
+        sessionStorage.removeItem("userid");
         this.show = !this.show;
         this.shoa = !this.shoa;
         this.$message({
@@ -370,11 +371,7 @@
             type: 'error'
           });
         }else {
-          this.$message({
-            showClose: true,
-            message: '跳了',
-            type: 'success'
-          });
+         this.$router.push("/userCenter")
         }
       }
     },

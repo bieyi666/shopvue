@@ -104,13 +104,18 @@
                   <i class="el-icon-document"></i>
                   <span slot="title">
                   <router-link to="/merchantOrder">
-                   我的订单
+                   团队订单
                   </router-link>
                   </span>
                 </el-menu-item>
                 <el-menu-item index="2">
                   <i class="el-icon-document"></i>
-                  <span slot="title">团队订单</span>
+                  <span slot="title">
+                    <router-link to="/testECharts">
+                      测试ECharts
+                    </router-link>
+
+                  </span>
                 </el-menu-item>
                 <el-menu-item index="3">
                   <i class="el-icon-document"></i>
@@ -131,12 +136,13 @@
                             style="width: 100%;height: 100%;border-radius: 10px"></el-image>
                 </div>
                 <div>
+                  <!--路由展示-->
                   <router-view>
 
                   </router-view>
 
                 </div>
-                <!--路由展示-->
+
 
 
               </el-main>
@@ -158,6 +164,7 @@
     name: "merchant",
     data() {
       return {
+        usersId: sessionStorage.getItem('uid'),
         isCollapse: false, //初始打开菜单
         icon: "el-icon-s-fold", //折叠按钮图标
         store: {},
@@ -179,7 +186,7 @@
       //获取商户数据
       getStoreData() {
         var _this = this;
-        this.$axios.get("queryStoreByUid.action?uid=" + 1)
+        this.$axios.get("queryStoreByUid.action?uid="+ _this.usersId)
           .then(function (result) {
             _this.store = result.data;
           })
@@ -225,7 +232,6 @@
     background-color: #E9EEF3;
     color: #333;
     text-align: center;
-    line-height: 160px;
   }
 
   /*导航菜单*/
