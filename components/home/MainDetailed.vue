@@ -1,5 +1,8 @@
 <template>
   <div style="height: 100%;width: 1385px;margin-top: -8px;margin-left: -27px">
+    <el-badge :value="1" class="shopping_cart_btn_item" type="primary">
+      <el-button icon="el-icon-shopping-cart-1" circle type="warning" class="shopping_cart_btn"></el-button>
+    </el-badge>
     <el-container>
       <el-header style="height: 50px;">
         <div style="background-color: #333;height: 36px;width: 1350px;">
