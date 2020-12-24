@@ -13,11 +13,6 @@ import Register from "../components/home/Register";
 //主
 /*import Login from '../components/home/Login.vue'*/
 
-
-
-
-
-
 import Goodsquery from "../components/home/Goodsquery";
 //商品详情
 import MainDetailed from "../components/home/MainDetailed";
@@ -30,6 +25,10 @@ import AccountInfo from "../components/user/child/AccountInfo.vue";
 //账号安全
 //地址管理
 import AddressManagement from "../components/user/child/AddressManagement.vue";
+
+//订单管理
+import MyOrderInfo from "../components/user/child/MyOrderInfo.vue";
+
 
 //主
 import Merchant from '../components/merchant/Merchant.vue'
@@ -121,6 +120,11 @@ var routes = [
         //地址管理
         path: '/addressManagement',
         component: AddressManagement
+      },
+      {
+        //地址管理
+        path: '/myOrderInfo',
+        component: MyOrderInfo
       }
     ]
   },

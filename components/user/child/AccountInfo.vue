@@ -141,7 +141,6 @@
       }
     },
     created: function () {
-      alert(1)
       this.getUserData();
     }
   }
