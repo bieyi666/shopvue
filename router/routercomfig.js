@@ -16,6 +16,9 @@ import Register from "../components/home/Register";
 
 
 
+
+
+import Goodsquery from "../components/home/Goodsquery";
 //商品详情
 import MainDetailed from "../components/home/MainDetailed";
 //用户中心
@@ -62,7 +65,34 @@ var routes = [
     ]
   },
   {
-    path: '/mainDetailed',component: MainDetailed
+    path: '/mainDetailed',component: MainDetailed,
+    children: [
+      {
+        //登录
+        path: '/logins',
+        component: Login
+      },
+      {
+        //注册
+        path: '/registers',
+        component: Register
+      }
+    ]
+  },
+  {
+    path: '/goodsquery',component: Goodsquery,
+    children: [
+      {
+        //登录
+        path: '/logina',
+        component: Login
+      },
+      {
+        //注册
+        path: '/registera',
+        component: Register
+      }
+    ]
   },
 /*  {
     //登录

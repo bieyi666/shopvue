@@ -2,26 +2,33 @@
   <div>
 <!--    <el-image src="./src/assets/image/login.jpg">-->
     <!--输入框登录-->
-    <div style="text-align: center">
+    <div style="margin-left: 150px">
       <h1>登录</h1>
     </div>
     <el-row>
 
       <el-col :span="24">
-        <el-form :model="ruleForm" status-icon :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
+        <el-form :model="ruleForm" status-icon :rules="rules" ref="ruleForm" label-width="100px"
+                 style="width: 300px"
+                 label-position="right" size="mini"
+                 class="demo-ruleForm">
           <el-form-item label="手机号码" prop="phone">
             <el-input v-model="ruleForm.phone" style="width: 200px;"></el-input>
             <br>
           </el-form-item>
-          <el-form-item label="密码" prop="password">
+          <el-form-item label="输入密码" prop="password">
             <el-input type="password" v-model="ruleForm.password" autocomplete="off" style="width: 200px;"></el-input>
+          </el-form-item>
+          <el-form-item >
+            &emsp;
           </el-form-item>
           &emsp;&emsp;&emsp;<el-button type="primary" @click="open('ruleForm')">登录</el-button>
 
           &emsp;&emsp;&emsp;没有用户？
-          <router-link to="/register">
+
+          <a href="#" @click="login">
             立即注册
-          </router-link>
+          </a>
         </el-form>
       </el-col>
     </el-row>
@@ -56,6 +63,14 @@
       }
     },
     methods: {
+      login(){
+        if (this.$route.path === "/login"){
+          this.$router.push("/register");
+        }else {
+          this.$router.push("/registers");
+        }
+
+      },
       open: function () {
         var _this = this;
         var params = new URLSearchParams();
@@ -70,11 +85,17 @@
                 type: 'success'
               });
               sessionStorage.setItem("username",result.data.username);
+              sessionStorage.setItem("uid",result.data.uid);
 
               _this.$parent.$parent.dialogVisible = false;
               _this.$parent.$parent.show=true;
               _this.$parent.$parent.shoa=false;
-              _this.$router.push("/mainPage");
+              if (this.$route.path === "/logins"){
+                _this.$router.push("/mainDetailed");
+              }else {
+                _this.$router.push("/mainPage");
+              }
+
 
             }else {
               //弹出消息  停留在该页面
@@ -85,8 +106,6 @@
               });
             }
           }).catch(function (error) {
-            alert(error);
-            console.log(error)
           });
         }else {
 

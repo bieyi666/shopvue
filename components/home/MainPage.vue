@@ -7,7 +7,7 @@
           <el-row>
             <el-col :span="14">
               <el-row align="middle">
-                <el-col :span="5">aa</el-col>
+                <el-col :span="5">&emsp;</el-col>
                 <el-col :span="18">
                   <i class="el-icon-loading" style="color: khaki;margin-top: 10px">
 
@@ -83,7 +83,7 @@
                   <el-input placeholder="请输入内容" v-model="input1" class="aaa"
                             style="outline: none;background-color: #ffffff;border-color: #DCDFE6">
                     <el-button slot="append"
-                               style="border-color: #ffffff;background-color: #ffffff;">
+                               style="border-color: #ffffff;background-color: #ffffff;" @click="queyrCid">
                       <i class="el-icon-search"></i>
                     </el-button>
                   </el-input>
@@ -234,8 +234,9 @@
 
     <!--    登录-->
     <el-dialog
+      class="dialog"
       :visible.sync="dialogVisible"
-      width="30%"
+      width="50%"
       :before-close="handleClose"
       center>
       <span>
@@ -343,6 +344,13 @@
         sessionStorage.setItem("cid",cid);
         this.$router.push("/mainDetailed")
       },
+      //查询商品
+      //点击查询带名字调整页面
+      queyrCid(){
+        var cname=this.input1
+        sessionStorage.setItem("cname",cname);
+        this.$router.push("/goodsquery")
+      },
       //页面进来判断是否登录
       EF(){
         var ca=sessionStorage.getItem("username");
@@ -351,7 +359,7 @@
           this.shoa=false;
         }
       },
-      //点击登录查询是否登录
+      //点击个人中心查询是否登录
       myorder(){
         var username=sessionStorage.getItem("username");
         //判断是否为空
@@ -370,6 +378,7 @@
         }
       }
     },
+    //挂钩子
     created() {
       this.EF();
       this.getAllCommodityAK();
@@ -382,7 +391,12 @@
 
 <style>
   /* 三种方法选择自己喜欢的一个即可 */
-
+  .dialog .el-dialog {
+    background-image: url(http://localhost:8080/shop/img/30.png);
+    background-size: 120%;
+    padding: 10px;
+    height: 400px;
+  }
   .el-input--small .el-input__inner {
     border: none;
   }
