@@ -36,7 +36,8 @@
                         &emsp;| &emsp;</a>
                     </il>
                     <il>
-                      <a href="#" style="color: #ccc;font-size: 10px;text-decoration:none;">我的订单 &emsp;| &emsp;</a>
+                      <a href="#" style="color: #ccc;font-size: 10px;text-decoration:none;" @click="myorder">个人中心 &emsp;|
+                        &emsp;</a>
                     </il>
                     <il>
                       <a href="#" style="color: #ccc;font-size: 10px;text-decoration:none;">客服 &emsp;| &emsp;</a>
@@ -70,21 +71,49 @@
         </div>
       </el-header>
       <el-main>
+        <div>
+          <el-row>
+            <el-col :span="2">&emsp;</el-col>
+            <el-col :span="4">
+              <el-image style="width:100%;height:100%;object-fit: cover;" @click="hui"
+                        src="./src/assets/image/logo.png"></el-image>
+            </el-col>
+            <el-col :span="3">&emsp;</el-col>
+            <el-col :span="11">
+              <div class="aaaa"
+                   style="margin-top: 30px;background-color: #ffffff;border-color: #ffffff; width: 580px;">
+                <el-input placeholder="请输入内容" v-model="input1" class="aaa"
+                          style="outline: none;background-color: #ffffff;border-color: #DCDFE6">
+                  <el-button slot="append"
+                             style="border-color: #ffffff;background-color: #ffffff;" @click="queyrCid">
+                    <i class="el-icon-search"></i>
+                  </el-button>
+                </el-input>
+              </div>
+            </el-col>
+            <el-col :span="4">
+              <div style="margin-top: 30px">
+                <el-button round><i class="el-icon-shopping-cart-2" style="font-size: 18px"></i>&emsp;<a
+                  style="font-size: 18px">购物车</a></el-button>
+              </div>
+            </el-col>
+          </el-row>
+        </div>
         <el-row>
           <el-col :span="3">&emsp;</el-col>
           <el-col :span="18">
             <el-row>
               <el-col :span="10">
                 <div style="width: 450px;height: 300px;">
-                    <el-carousel>
-                      <el-carousel-item v-for="item in shuju" :key="item">
-                        <el-image :src="item.img" style="width: 100%;height: 100%"></el-image>
-                      </el-carousel-item>
-                    </el-carousel>
+                  <el-carousel>
+                    <el-carousel-item v-for="item in shuju" :key="item">
+                      <el-image :src="item.img" style="width: 100%;height: 100%"></el-image>
+                    </el-carousel-item>
+                  </el-carousel>
                 </div>
                 <br>
                 <div style="width: 450px; height: 90px; text-align: center">
-                  <div style="width: 100px; height: 90px;float: left"   v-for="aa in shuju">
+                  <div style="width: 100px; height: 90px;float: left" v-for="aa in shuju">
                     <el-image :src="aa.img" @click="imagea(aa.img)"></el-image>
                   </div>
                   <div style="float: left;"></div>
@@ -93,13 +122,19 @@
               <el-col :span="1">&emsp;</el-col>
               <el-col :span="13">
                 <div v-for="aa in shujua">
-                  <el-tag type="success"  >商品介绍:</el-tag><a style="font-size: 15px;color: #DCDFE6">&emsp;{{aa.introduce}}</a><br><br>
-                  <el-tag type="success" >价格:</el-tag><a >&emsp;￥{{aa.price}}</a><br><br>
-                  <el-tag type="info" >名称:</el-tag><a>&emsp;{{aa.cname}}</a><br><br>
-                  <el-tag type="warning" >数量:</el-tag><a>&emsp;{{aa.warehouseGoods.stock}}</a><br><br><br><br><br><br>
-                 <!-- <el-tag type="danger">标签五:</el-tag><br><br>-->
+                  <el-tag type="success">商品介绍:</el-tag>
+                  <a style="font-size: 15px;color: #DCDFE6">&emsp;{{aa.introduce}}</a><br><br>
+                  <el-tag type="success">价格:</el-tag>
+                  <a>&emsp;￥{{aa.price}}</a><br><br>
+                  <el-tag type="info">名称:</el-tag>
+                  <a>&emsp;{{aa.cname}}</a><br><br>
+                  <el-tag type="warning">数量:</el-tag>
+                  <a v-if="aa.warehouseGoods!=null">&emsp;{{aa.warehouseGoods.stock}}</a>
+                  <a v-if="aa.warehouseGoods==null">&emsp;0</a>
+                  <br><br><br><br><br><br>
+                  <!-- <el-tag type="danger">标签五:</el-tag><br><br>-->
 
-                  <el-button type="danger"@click="purchase" style="text-align: center;width: 130px;">购买</el-button>&emsp;
+                  <el-button type="danger" @click="purchase" style="text-align: center;width: 130px;">购买</el-button>&emsp;
                   <el-button type="danger" @click="shoppingcar" style="text-align: center;width: 150px;">购物车</el-button>
                 </div>
 
@@ -136,7 +171,7 @@
   </span>
     </el-dialog>
   </div>
-<!--AA-->
+  <!--AA-->
 </template>
 
 <script>
@@ -148,11 +183,12 @@
         show: false,
         shoa: true,
         dialogVisible: false,
-        shujua:[{}],
+        shujua: [{}],
+        input1:'',
         shuju: [{img: "./src/assets/image/login.jpg"},
           {img: "./src/assets/image/logo.png"},
           {img: "./src/assets/image/logo.png"}],
-        imgaa:'',
+        imgaa: '',
       }
     },
     methods: {
@@ -161,6 +197,13 @@
         this.dialogVisible = true
         this.$router.push("/logins")
         ;
+      },
+      //查询商品
+      //点击查询带名字调整页面
+      queyrCid() {
+        var cname = this.input1
+        sessionStorage.setItem("cname", cname);
+        this.$router.push("/goodsquery")
       },
       //注销
       logout() {
@@ -181,11 +224,11 @@
         }
       },
       //根据id查询单条
-      getAlldanshu(){
-        var _this=this;
-        var cid=sessionStorage.getItem("cid");
-        this.$axios.post("queryAllCommodity.action?cId="+cid).then(function (result) {
-          _this.shujua=result.data.rows
+      getAlldanshu() {
+        var _this = this;
+        var cid = sessionStorage.getItem("cid");
+        this.$axios.post("queryAllCommodity.action?cId=" + cid).then(function (result) {
+          _this.shujua = result.data.rows
         }).catch(function (error) {
           alert(error);
           console.log(error);
@@ -193,12 +236,12 @@
       },
       //图片切换
       imagea(imguel) {
-        this.imgaa=this.shuju.img[1];
+        this.imgaa = this.shuju.img[1];
       },
       //购买
-      purchase(){
-        var username=sessionStorage.getItem("username");
-        if(!username){
+      purchase() {
+        var username = sessionStorage.getItem("username");
+        if (!username) {
           this.$message({
             showClose: true,
             message: '请登录',
@@ -206,19 +249,50 @@
           });
           /*this.dialogVisible = true
           this.$router.push("/logins")*/
-        }else {
-          this.$message({
-            showClose: true,
-            message: '购买成功',
-            type: 'success'
-          });
+        } else {
+          this.shujua.forEach(item => {
+            if (item.warehouseGoods != null) {
+              this.$message({
+                showClose: true,
+                message: '购买成功',
+                type: 'success'
+              });
+            } else {
+              this.$message({
+                showClose: true,
+                message: '暂无库存',
+                type: 'error'
+              });
+            }
+          })
         }
       },
+      //个人中心
+      myorder() {
+        var username = sessionStorage.getItem("username");
+        //判断是否为空
+        if (username == null) {
+          this.$message({
+            showClose: true,
+            message: '请登录',
+            type: 'error'
+          });
+        } else {
+          this.$router.push("/userCenter")
+        }
+      }
+      ,
+      //返回首页
+      hui() {
+        this.$router.push("/mainPage")
+      }
+      ,
       //购物车
-      shoppingcar(){
+      shoppingcar() {
 
       }
-    },
+    }
+    ,
     created() {
       this.EF();
       this.getAlldanshu();

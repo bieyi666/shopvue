@@ -77,7 +77,7 @@
             <el-row>
               <el-col :span="2">&emsp;</el-col>
               <el-col :span="4">
-                <el-image style="width:100%;height:100%;object-fit: cover;"
+                <el-image style="width:100%;height:100%;object-fit: cover;" @click="hui"
                           src="./src/assets/image/logo.png"></el-image>
               </el-col>
               <el-col :span="3">&emsp;</el-col>
@@ -169,14 +169,18 @@
                     </div>
                   </div>
                   <div style="height: 100%; width: 74%; float: left">
-                    <div style="width: 275px; height: 50%;background-color: #ffffff;float: left" v-for="aam in tu"
-                         @click="gou(aam.cid)">
-                      <el-image style="width: 100%;height: 60%;" :src="aam.picture"></el-image>
+                    <div style="width: 275px; height: 50%;background-color: #ffffff;float: left" v-for="aam in tu">
+                      <div @click="gou(aam.cid)">
+                        <el-card shadow="hover" style="width: 270px;height: 160px;margin-left: 2px">
+                          <el-image style="width: 260px;height: 140px;top: -10px;left: -15px" :src="aam.picture"></el-image>
+                        </el-card>
+                      </div>
                       <div style="width: 100%;height: 40%;text-align:center;">
                         <br>
-                        <span>{{aam.cname}}</span>
+                        <span @click="gou(aam.cid)">{{aam.cname}}</span>
                         <br>
-                        <span style="color: red">￥<span style="color: red">{{aam.price}}</span></span>
+                        <span @click="gou(aam.cid)" style="color: red">￥<span
+                          style="color: red">{{aam.price}}</span></span>
                       </div>
                     </div>
                   </div>
@@ -186,7 +190,7 @@
             </el-row>
 
           </div>
-          <br>
+          <br>          <br>          <br>
           <div style="width: 1350px">
             <el-row style="background-color: #f4f0ea">
               <el-col :span="2">&emsp;</el-col>
@@ -209,14 +213,17 @@
                     </div>
                   </div>
                   <div style="height: 100%; width: 74%; float: left">
-                    <div style="width: 275px; height: 50%;background-color: #ffffff;float: left" v-for="aam in Ak47"
-                         @click="gou(aam.cid)">
-                      <el-image style="width: 100%;height: 60%;" :src="aam.picture"></el-image>
+                    <div style="width: 275px; height: 50%;background-color: #ffffff;float: left" v-for="aam in Ak47">
+                      <div @click="gou(aam.cid)">
+                        <el-card shadow="hover" style="width: 270px;height: 160px;margin-left: 2px">
+                          <el-image style="width: 260px;height: 140px;top: -10px;left: -15px" :src="aam.picture"></el-image>
+                        </el-card>
+                      </div>
                       <div style="width: 100%;height: 40%;text-align:center;">
                         <br>
-                        <span>{{aam.cname}}</span>
+                        <span @click="gou(aam.cid)">{{aam.cname}}</span>
                         <br>
-                        <span style="color: red">￥<span style="color: red">{{aam.price}}</span></span>
+                        <span @click="gou(aam.cid)" style="color: red">￥<span style="color: red">{{aam.price}}</span></span>
                       </div>
                     </div>
                   </div>
@@ -379,6 +386,10 @@
         } else {
           this.$router.push("/userCenter")
         }
+      },
+      //返回首页
+      hui() {
+        this.$router.push("/mainPage")
       }
     },
     //挂钩子
