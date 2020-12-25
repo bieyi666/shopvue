@@ -38,6 +38,7 @@ import MerchantMain from '../components/merchant/MerchantMain.vue'
 import MerchantOrder from '../components/merchant/MerchantOrder.vue'
 import MerchantIncome from '../components/merchant/MerchantIncome.vue'
 import TestECharts from "../components/merchant/TestECharts";
+import TestUpload from "../components/merchant/TestUpload";
 
 
 
@@ -152,6 +153,10 @@ var routes = [
       {
         path: '/testECharts',
         component: TestECharts
+      },
+      {
+        path: '/testUpload',
+        component: TestUpload
       }
     ]
   },
