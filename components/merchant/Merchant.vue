@@ -111,19 +111,27 @@
                 <el-menu-item index="2">
                   <i class="el-icon-document"></i>
                   <span slot="title">
+                  <router-link to="/merchantIncome">
+                      我的收入
+                  </router-link>
+                   </span>
+                </el-menu-item>
+                <el-menu-item index="3">
+                  <i class="el-icon-document"></i>
+                  <span slot="title">
                     <router-link to="/testECharts">
                       测试ECharts
                     </router-link>
 
                   </span>
                 </el-menu-item>
-                <el-menu-item index="3">
+                <el-menu-item index="4">
                   <i class="el-icon-document"></i>
                   <span slot="title">
-              <router-link to="/merchantIncome">
-              我的收入
-              </router-link>
-            </span>
+                  <router-link to="/testUpload">
+                      测试文件上传
+                  </router-link>
+                   </span>
                 </el-menu-item>
               </el-menu>
             </el-col>
@@ -142,7 +150,6 @@
                   </router-view>
 
                 </div>
-
 
 
               </el-main>
@@ -186,7 +193,7 @@
       //获取商户数据
       getStoreData() {
         var _this = this;
-        this.$axios.get("queryStoreByUid.action?uid="+ _this.usersId)
+        this.$axios.get("queryStoreByUid.action?uid=" + _this.usersId)
           .then(function (result) {
             _this.store = result.data;
           })
@@ -217,11 +224,11 @@
     min-height: 400px;
   }
 
-/*  .el-header {
-    background-color: aliceblue;
-    text-align: center;
-    line-height: 60px;
-  }  */
+  /*  .el-header {
+      background-color: aliceblue;
+      text-align: center;
+      line-height: 60px;
+    }  */
   .user {
     background-color: aliceblue;
     text-align: center;

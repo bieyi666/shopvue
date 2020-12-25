@@ -1,3 +1,4 @@
+<!--EChrats-->
 <template>
   <div>
         <!-- 为 ECharts 准备一个具备大小（宽高）的 DOM -->

@@ -31,7 +31,7 @@ import AccountInfo from "../components/user/child/AccountInfo.vue";
 //地址管理
 import AddressManagement from "../components/user/child/AddressManagement.vue";
 
-//主
+//商户主
 import Merchant from '../components/merchant/Merchant.vue'
 /*子*/
 import MerchantInfo from '../components/merchant/MerchantInfo.vue'
@@ -39,6 +39,7 @@ import MerchantMain from '../components/merchant/MerchantMain.vue'
 import MerchantOrder from '../components/merchant/MerchantOrder.vue'
 import MerchantIncome from '../components/merchant/MerchantIncome.vue'
 import TestECharts from "../components/merchant/TestECharts";
+import TestUpload from "../components/merchant/TestUpload";
 
 
 
@@ -148,6 +149,10 @@ var routes = [
       {
         path: '/testECharts',
         component: TestECharts
+      },
+      {
+        path: '/testUpload',
+        component: TestUpload
       }
     ]
   },
