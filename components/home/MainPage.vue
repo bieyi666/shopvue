@@ -1,8 +1,9 @@
 <template>
   <!--background-color: aqua;-->
   <div style="height: 100%;width: 1385px;margin-top: -8px;margin-left: -27px">
+    <shopping-cat-com/>
     <el-badge :value="3" class="shopping_cart_btn_item" type="primary">
-      <el-button icon="el-icon-shopping-cart-1" circle type="warning" class="shopping_cart_btn"></el-button>
+      <el-button @click="startShoppingCat" icon="el-icon-shopping-cart-1" circle type="warning" class="shopping_cart_btn"></el-button>
     </el-badge>
     <el-container>
       <el-header style="height: 50px;">
@@ -267,8 +268,10 @@
 
 <script>
 
+  import ShoppingCatCom from "../can/shoppingCat";
   export default {
     name: "MainPage",
+    components: {ShoppingCatCom},
     data() {
       return {
         dialogVisible: false,
@@ -293,6 +296,10 @@
       }
     },
     methods: {
+      // 打开购物车
+      startShoppingCat() {
+        this.$children[0].shoppingBool = true;
+      },
       handleClick(tab, event) {
         console.log(tab, event);
         if (tab.name == "second") {

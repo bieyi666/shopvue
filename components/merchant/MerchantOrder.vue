@@ -4,9 +4,10 @@
 
     <div class="block">
       <!--      <span class="demonstration">起始日期时刻为 12:00:00，结束日期时刻为 08:00:00</span>-->
+      <!--      format="yyyy 年 MM 月 dd 日 hh 时:mm分:ss秒"-->
       <el-date-picker
-        format="yyyy 年 MM 月 dd 日 hh 时:mm分:ss秒"
-        value-format="yyyy-MM-dd hh:mm:ss"
+        :picker-options="pickerOptions"
+        value-format="yyyy-MM-dd HH:mm:ss"
         v-model="value2"
         type="datetimerange"
         align="right"
@@ -146,11 +147,59 @@
     name: "MerchantOrder",
     data() {
       return {
+        pickerOptions: {
+          shortcuts: [
+            {
+              text: '最近一周',
+              onClick(picker) {
+                const end = new Date();
+                const start = new Date();
+                start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
+                picker.$emit('pick', [start, end]);
+              }
+            },
+            {
+              text: '最近一个月',
+              onClick(picker) {
+                const end = new Date();
+                const start = new Date();
+                start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
+                picker.$emit('pick', [start, end]);
+              }
+            },
+            {
+              text: '最近三个月',
+              onClick(picker) {
+                const end = new Date();
+                const start = new Date();
+                start.setTime(start.getTime() - 3600 * 1000 * 24 * 90);
+                picker.$emit('pick', [start, end]);
+              },
+            },
+            {
+              text: '最近半年',
+              onClick(picker) {
+                const end = new Date();
+                const start = new Date();
+                start.setTime(start.getTime() - 3600 * 1000 * 24 * 180);
+                picker.$emit('pick', [start, end]);
+              }
+            },
+            {
+              text: '最近一年',
+              onClick(picker) {
+                const end = new Date();
+                const start = new Date();
+                start.setTime(start.getTime() - 3600 * 1000 * 24 * 365);
+                picker.$emit('pick', [start, end]);
+              }
+            }]
+        },
         tableData: [],
         search: '',
         value2: '',
-        orderTime1:null,
-        orderTime2:null
+        orderTime1: null,
+        orderTime2: null
       }
     },
     methods: {
@@ -159,7 +208,8 @@
         var _this = this;
         var params = new URLSearchParams();
         params.append("storeid", 1);
-        //params.append("orderTime1",this.value2)
+        params.append("orderTime1", this.orderTime1);
+        params.append("orderTime2", this.orderTime2);
         this.$axios.get("queryAllOrderInfoBySid.action", {
           params
         }).then(function (result) {
@@ -174,9 +224,16 @@
     },
     watch: {
       value2: function (newval) {
-        for (var i=0 ;i <newval.length;i++){
-         this.orderTime=newval[i];
+
+        if (newval == null) {
+          this.orderTime1 = null;
+          this.orderTime2 = null;
+        } else {
+          this.orderTime1 = newval[0];
+          this.orderTime2 = newval[1];
         }
+
+        this.getOrderData();
       }
     }
 

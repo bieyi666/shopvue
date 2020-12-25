@@ -1,7 +1,8 @@
 <template>
   <div style="height: 100%;width: 1385px;margin-top: -8px;margin-left: -27px">
-    <el-badge :value="1" class="shopping_cart_btn_item" type="primary">
-      <el-button icon="el-icon-shopping-cart-1" circle type="warning" class="shopping_cart_btn"></el-button>
+    <shopping-cat-com/>
+    <el-badge :value="3" class="shopping_cart_btn_item" type="primary">
+      <el-button @click="startShoppingCat" icon="el-icon-shopping-cart-1" circle type="warning" class="shopping_cart_btn"></el-button>
     </el-badge>
     <el-container>
       <el-header style="height: 50px;">
@@ -154,7 +155,6 @@
         </div>
       </el-footer>
     </el-container>
-
     <!--    登录-->
     <el-dialog
       class="dialog"
@@ -175,9 +175,10 @@
 </template>
 
 <script>
-
+  import ShoppingCatCom from "../can/shoppingCat";
   export default {
     name: "MainDetailed",
+    components: {ShoppingCatCom},
     data() {
       return {
         show: false,
@@ -192,6 +193,10 @@
       }
     },
     methods: {
+      // 打开购物车
+      startShoppingCat() {
+        this.$children[0].shoppingBool = true;
+      },
       //打开登录/注册
       login() {
         this.dialogVisible = true
