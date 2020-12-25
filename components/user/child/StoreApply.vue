@@ -108,8 +108,8 @@
           }
         })
           .then(function (response) {
+              alert("提交申请成功")
             dialogVisible: false;
-              alert("添加成功")
           })
           .catch(function (error) {
             alert(error)

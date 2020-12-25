@@ -1,6 +1,10 @@
 <template>
   <!--background-color: aqua;-->
   <div style="height: 100%;width: 1385px;margin-top: -8px;margin-left: -27px">
+    <shopping-cat-com/>
+    <el-badge :value="3" class="shopping_cart_btn_item" type="primary">
+      <el-button @click="startShoppingCat" icon="el-icon-shopping-cart-1" circle type="warning" class="shopping_cart_btn"></el-button>
+    </el-badge>
     <el-container>
       <el-header style="height: 50px;">
         <div style="background-color: #333;height: 36px;width: 1350px;">
@@ -34,7 +38,8 @@
                         &emsp;| &emsp;</a>
                     </il>
                     <il>
-                      <a href="#" @click="myorder" style="color: #ccc;font-size: 10px;text-decoration:none;">个人中心 &emsp;| &emsp;</a>
+                      <a href="#" @click="myorder" style="color: #ccc;font-size: 10px;text-decoration:none;">个人中心 &emsp;|
+                        &emsp;</a>
                     </il>
                     <il>
                       <a href="#" style="color: #ccc;font-size: 10px;text-decoration:none;">客服 &emsp;| &emsp;</a>
@@ -164,14 +169,15 @@
                       <a>¥88</a>
                     </div>
                   </div>
-                  <div style="height: 100%; width: 74%; float: left" >
-                    <div style="width: 275px; height: 50%;background-color: #ffffff;float: left" v-for="aam in tu" @click="gou(aam.cid)">
-                      <el-image style="width: 100%;height: 60%;" :src="aam.picture" ></el-image>
+                  <div style="height: 100%; width: 74%; float: left">
+                    <div style="width: 275px; height: 50%;background-color: #ffffff;float: left" v-for="aam in tu"
+                         @click="gou(aam.cid)">
+                      <el-image style="width: 100%;height: 60%;" :src="aam.picture"></el-image>
                       <div style="width: 100%;height: 40%;text-align:center;">
                         <br>
-                        <span >{{aam.cname}}</span>
+                        <span>{{aam.cname}}</span>
                         <br>
-                        <span style="color: red">￥<span style="color: red" >{{aam.price}}</span></span>
+                        <span style="color: red">￥<span style="color: red">{{aam.price}}</span></span>
                       </div>
                     </div>
                   </div>
@@ -204,13 +210,14 @@
                     </div>
                   </div>
                   <div style="height: 100%; width: 74%; float: left">
-                    <div style="width: 275px; height: 50%;background-color: #ffffff;float: left" v-for="aam in Ak47" @click="gou(aam.cid)">
+                    <div style="width: 275px; height: 50%;background-color: #ffffff;float: left" v-for="aam in Ak47"
+                         @click="gou(aam.cid)">
                       <el-image style="width: 100%;height: 60%;" :src="aam.picture"></el-image>
                       <div style="width: 100%;height: 40%;text-align:center;">
                         <br>
-                        <span >{{aam.cname}}</span>
+                        <span>{{aam.cname}}</span>
                         <br>
-                        <span style="color: red">￥<span style="color: red" >{{aam.price}}</span></span>
+                        <span style="color: red">￥<span style="color: red">{{aam.price}}</span></span>
                       </div>
                     </div>
                   </div>
@@ -254,8 +261,10 @@
 
 <script>
 
+  import ShoppingCatCom from "../can/shoppingCat";
   export default {
     name: "MainPage",
+    components: {ShoppingCatCom},
     data() {
       return {
         dialogVisible: false,
@@ -280,6 +289,10 @@
       }
     },
     methods: {
+      // 打开购物车
+      startShoppingCat() {
+        this.$children[0].shoppingBool = true;
+      },
       handleClick(tab, event) {
         console.log(tab, event);
         if (tab.name == "second") {
@@ -341,37 +354,37 @@
       },
       //点击商品拿取id跳转页面
       gou(index) {
-        var cid=index
-        sessionStorage.setItem("cid",cid);
+        var cid = index
+        sessionStorage.setItem("cid", cid);
         this.$router.push("/mainDetailed")
       },
       //查询商品
       //点击查询带名字调整页面
-      queyrCid(){
-        var cname=this.input1
-        sessionStorage.setItem("cname",cname);
+      queyrCid() {
+        var cname = this.input1
+        sessionStorage.setItem("cname", cname);
         this.$router.push("/goodsquery")
       },
       //页面进来判断是否登录
-      EF(){
-        var ca=sessionStorage.getItem("username");
-        if(ca!=null){
-          this.show=true;
-          this.shoa=false;
+      EF() {
+        var ca = sessionStorage.getItem("username");
+        if (ca != null) {
+          this.show = true;
+          this.shoa = false;
         }
       },
       //点击个人中心查询是否登录
-      myorder(){
-        var username=sessionStorage.getItem("username");
+      myorder() {
+        var username = sessionStorage.getItem("username");
         //判断是否为空
-        if(username==null){
+        if (username == null) {
           this.$message({
             showClose: true,
             message: '请登录',
             type: 'error'
           });
-        }else {
-         this.$router.push("/userCenter")
+        } else {
+          this.$router.push("/userCenter")
         }
       }
     },
@@ -394,7 +407,30 @@
     padding: 10px;
     height: 400px;
   }
+
   .el-input--small .el-input__inner {
     border: none;
+  }
+
+  .shopping_cart_btn {
+    font-size: 35px;
+    transform: translateX(-50%) translateY(-50%);
+    box-shadow: 0 0 5px #999;
+  }
+
+  .shopping_cart_btn_item {
+    position: fixed;
+    left: 1293px;
+    bottom: 200px;
+    z-index: 10;
+  }
+
+  .shopping_cart_btn_item .el-badge__content.is-fixed {
+    top: -21px;
+    right: 47px;
+  }
+
+  .el-badge__content {
+    border: 0px;
   }
 </style>
