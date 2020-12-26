@@ -10,6 +10,8 @@ import echarts from 'echarts'
 Vue.prototype.$echarts = echarts
 Vue.use(Element)
 
+//图片上传地址
+Vue.prototype.$upload = "http://localhost:8080/shop/ImageUpload.action";
 // 图片地址
 Vue.prototype.$host = "http://localhost:8080/img/";
 // 引用axios，并设置基础URL为后端服务api地址

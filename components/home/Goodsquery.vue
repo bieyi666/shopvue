@@ -71,7 +71,7 @@
           <el-row>
             <el-col :span="2">&emsp;</el-col>
             <el-col :span="4">
-              <el-image style="width:100%;height:100%;object-fit: cover;"
+              <el-image style="width:100%;height:100%;object-fit: cover;" @click="hui"
                         src="./src/assets/image/logo.png"></el-image>
             </el-col>
             <el-col :span="3">&emsp;</el-col>
@@ -97,15 +97,21 @@
           <el-row>
             <el-col :span="2">&emsp;</el-col>
             <el-col :span="20">
-              <div style="width: 270px; height: 300px;background-color: #ffffff;float: left" v-for="aam in CommodityData" @click="gou(aam.cid)">
-                <el-image style="width: 100%;height: 60%;" :src="aam.picture"></el-image>
+              <div style="width: 280px; height: 300px;background-color: #ffffff;float: left"
+                   v-for="aam in CommodityData" >
+                <div @click="gou(aam.cid)">
+                  <el-card shadow="hover" style="width: 260px;height: 190px">
+                    <el-image style="width: 100%;height: 150px;" :src="aam.picture"></el-image>
+                  </el-card>
+                </div>
                 <div style="width: 100%;height: 40%;text-align:center;">
                   <br>
-                  <span >{{aam.cname}}</span>
+                  <span @click="gou(aam.cid)">{{aam.cname}}</span>
                   <br>
-                  <span style="color: red">￥<span style="color: red" >{{aam.price}}</span></span>
+                  <span style="color: red" @click="gou(aam.cid)">￥<span style="color: red">{{aam.price}}</span></span>
                 </div>
               </div>
+              <div v-if="CommodityData==''"style="width: 100%;height: 100px;text-align: center"><h3>暂无商品</h3></div>
             </el-col>
             <el-col :span="2">&emsp;</el-col>
           </el-row>
@@ -118,6 +124,21 @@
           <el-image src="./src/assets/image/di.png"></el-image>
         </div>
       </el-footer>
+      <!--    登录-->
+      <el-dialog
+        class="dialog"
+        :visible.sync="dialogVisible"
+        width="50%"
+        :before-close="handleClose"
+        center>
+      <span>
+        <router-view>
+
+        </router-view>
+      </span>
+        <span slot="footer" class="dialog-footer">
+  </span>
+      </el-dialog>
     </el-container>
   </div>
 </template>
@@ -127,28 +148,77 @@
     name: "Goodsquery",
     data() {
       return {
-        CommodityData:[{}],
-        input1:'',
+        CommodityData: [{}],
+        dialogVisible:false,
+        input1: '',
+        show: false,
+        shoa: true,
       }
     },
-    methods:{
-      getAllShop(){
-        var cname=sessionStorage.getItem("cname");
-        var _this=this;
-        this.$axios.post("queryAllCommoditysan.action?cName="+cname).then(function (result) {
-          _this.CommodityData=result.data;
+    methods: {
+      //异步查询所有商品
+      getAllShop() {
+        var cname = sessionStorage.getItem("cname");
+        var tid = sessionStorage.getItem("tid");
+        var  params=new URLSearchParams()
+        if(cname!=' '){
+          params.append("cName",cname);
+        }
+        if(tid!=' '){
+        params.append("tId",tid);
+        }
+        var _this = this;
+        this.$axios.post("queryAllCommoditysan.action",params).then(function (result) {
+          _this.CommodityData = result.data;
         }).catch(function (error) {
           alert(error)
         })
       },
-      queyrCname(){
-        var cname=this.input1
-        sessionStorage.setItem("cname",cname);
+      //打开登录/注册
+      login() {
+        this.$router.push("/logina")
+        this.dialogVisible = true;
+      },
+      //注销
+      logout() {
+        sessionStorage.removeItem("username");  //从浏览器session清空数据
+        sessionStorage.removeItem("userid");
+        this.show = !this.show;
+        this.shoa = !this.shoa;
+        this.$message({
+          showClose: true,
+          message: '注销成功',
+          type: 'error'
+        });
+      },
+      //条件查询所有商品
+      queyrCname() {
+        var cname = this.input1
+        sessionStorage.setItem("cname", cname);
+        sessionStorage.setItem("tid", ' ');
         this.getAllShop();
+      },
+      //点击商品拿取id跳转页面
+      gou(index) {
+        var cid = index
+        sessionStorage.setItem("cid", cid);
+        this.$router.push("/mainDetailed")
+      },
+      //返回首页
+      hui() {
+        this.$router.push("/mainPage")
+      },
+      EF() {
+        var ca = sessionStorage.getItem("username");
+        if (ca != null) {
+          this.show = true;
+          this.shoa = false;
+        }
       },
     },
     created() {
       this.getAllShop();
+      this.EF();
     }
   }
 </script>

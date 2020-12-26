@@ -12,10 +12,19 @@
         <el-input disabled v-model="storeFrom.address"></el-input>
       </el-form-item>
       <el-form-item label="店铺图片" :label-width="labelWidth">
-        <input type="file" @change="getFile($event)">
+        <!--<input type="file" @change="getFile($event)">-->
+        <el-upload
+          class="avatar-uploader"
+          :action="this.$upload"
+          :show-file-list="false"
+          :on-success="handleAvatarSuccess"
+          :before-upload="beforeAvatarUpload">
+          <img v-if="imageUrl" :src="imageUrl" class="avatar">
+          <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+        </el-upload>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" @click="submitForm('storeFrom')">提交</el-button>
+        <el-button type="primary" @click="updateMerchantInfo('storeFrom')">提交</el-button>
       </el-form-item>
     </el-form>
   </div>
@@ -26,7 +35,9 @@
     name: "MerchantInfo",
     data() {
       return {
+        imageUrl: null,
         labelWidth: '120px',
+        photo: '', //头像
         storeFrom: {
           storeId: '',
           uId: '',
@@ -36,7 +47,7 @@
           photo: '',
           state: '',
           msg: '',
-          image:''
+          image: ''
         },
         rules: {
           image: [{
@@ -48,12 +59,69 @@
       }
     },
     methods: {
-      submitForm(formName) {
+
+      /**
+       * 上传单张图片
+       * 上传后
+       * @param response 返回值
+       * @param file
+       */
+      handleAvatarSuccess(response, file) {
+        response!=null && response!=""?this.photo=response:null;
+        this.imageUrl = URL.createObjectURL(file.raw);
+      },
+      //上传前
+      beforeAvatarUpload(file) {
+        const isJPG = file.type === 'image/jpeg';
+        const isPNG = file.type === 'image/png';
+        const isLt2M = file.size / 1024 / 1024 < 2;
+        var is = "";
+        if (isJPG || isPNG) {
+          !isJPG ? is = isPNG : isJPG;
+        } else {
+          this.$message.error('上传头像图片只能是 JPG、PNG 格式!');
+        }
+        if (!isLt2M) {
+          this.$message.error('上传头像图片大小不能超过 2MB!');
+        }
+        return is && isLt2M;
+      },
+
+      /**
+       * 修改数据
+       */
+      updateMerchantInfo(){
+        /* formData格式提交： */
+        console.log(this.storeFrom)
+        this.storeFrom.photo="";
+        let formData = new FormData();
+        for(var key in this.storeFrom){
+          formData.append(key,this.storeFrom[key]);
+        }
+        formData.delete("photo");
+        formData.append("photo",this.photo);
+        this.$axios({
+          method:"post",
+          url:"updateStoreInfoBySid.action",
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          },
+
+          data:formData
+        }).then((res)=>{
+          alert(res.data)
+          this.$router.push("/merchantMain")
+        }).catch((reason => {
+          alert(reason)
+        }));
+      }
+
+      /*submitForm(formName) {
         var _this = this;
         this.$refs[formName].validate((valid) => {
           if (valid) {
-            /*//阻止元素发生默认的行为
-            event.preventDefault();*/
+            /!*!//阻止元素发生默认的行为
+            event.preventDefault();*!/
             let formData = new FormData();
             // formData.append("img",this.addform.img);
             //将需要提交的表单数据 快速组装为H5定义的类型FormData
@@ -89,15 +157,17 @@
             return false;
           }
         });
-      },
-      getFile: function (event) {  //文件每次选中，触发此方法  将选中的文件内容填充到addform中的img  后台通过img获取文件内容
-        this.storeFrom.image = event.target.files[0];
-        this.storeFrom.photo = event.target.files[0].name;
-      }
+      },*/
+      /* getFile: function (event) {  //文件每次选中，触发此方法  将选中的文件内容填充到addform中的img  后台通过img获取文件内容
+         this.storeFrom.image = event.target.files[0];
+         this.storeFrom.photo = event.target.files[0].name;
+       }*/
 
     },
     created() {
       this.storeFrom = this.$route.query.store;
+      this.photo = this.$route.query.store.photo;
+      this.imageUrl = this.$host + this.$route.query.store.photo;
     }
   }
 </script>
