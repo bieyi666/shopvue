@@ -98,7 +98,7 @@
             <el-col :span="2">&emsp;</el-col>
             <el-col :span="20">
               <div style="width: 280px; height: 300px;background-color: #ffffff;float: left"
-                   v-for="aam in CommodityData">
+                   v-for="aam in CommodityData" >
                 <div @click="gou(aam.cid)">
                   <el-card shadow="hover" style="width: 260px;height: 190px">
                     <el-image style="width: 100%;height: 150px;" :src="aam.picture"></el-image>
@@ -111,6 +111,7 @@
                   <span style="color: red" @click="gou(aam.cid)">￥<span style="color: red">{{aam.price}}</span></span>
                 </div>
               </div>
+              <div v-if="CommodityData==''"style="width: 100%;height: 100px;text-align: center"><h3>暂无商品</h3></div>
             </el-col>
             <el-col :span="2">&emsp;</el-col>
           </el-row>
@@ -158,8 +159,16 @@
       //异步查询所有商品
       getAllShop() {
         var cname = sessionStorage.getItem("cname");
+        var tid = sessionStorage.getItem("tid");
+        var  params=new URLSearchParams()
+        if(cname!=' '){
+          params.append("cName",cname);
+        }
+        if(tid!=' '){
+        params.append("tId",tid);
+        }
         var _this = this;
-        this.$axios.post("queryAllCommoditysan.action?cName=" + cname).then(function (result) {
+        this.$axios.post("queryAllCommoditysan.action",params).then(function (result) {
           _this.CommodityData = result.data;
         }).catch(function (error) {
           alert(error)
@@ -186,6 +195,7 @@
       queyrCname() {
         var cname = this.input1
         sessionStorage.setItem("cname", cname);
+        sessionStorage.setItem("tid", ' ');
         this.getAllShop();
       },
       //点击商品拿取id跳转页面

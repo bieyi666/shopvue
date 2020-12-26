@@ -110,7 +110,7 @@
                     <div style="width: 100px;height: 200px; float: left;text-align:center;" v-for="mm in chtype">
                       <a>{{mm.tname}}</a>
                       <hr style="width: 70px;">
-                      <a v-for="aa in chcype" v-if="mm.tid==aa.tsan">{{aa.tname}}<br></a>
+                      <a v-for="aa in chcype" v-if="mm.tid==aa.tsan" @click="queyrCname(aa.tid)">{{aa.tname}}<br></a>
                       <br>
                       <br>
                     </div>
@@ -374,6 +374,13 @@
         var cname = this.input1
         sessionStorage.setItem("cname", cname);
         this.$router.push("/goodsquery")
+      },
+      //查询商品
+      //点击查询带id调整页面
+      queyrCname(index) {
+        sessionStorage.setItem("tid", index);
+        sessionStorage.setItem("cname", ' ');
+        this.$router.push("/goodsquery");
       },
       //页面进来判断是否登录
       EF() {
