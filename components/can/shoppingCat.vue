@@ -268,6 +268,7 @@
       },
       // 查询该用户的购物车商品
       seShoppingCatGoods() {
+        this.shop = [];
         let data = new URLSearchParams();
         data.set("uid", sessionStorage.getItem("uid"));
         this.$axios.post("seShoppingCat.action", data).then((result) => {
@@ -276,12 +277,28 @@
               this.shop.push(item1);
             });
           });
+          this.$parent.shoppingCatNumSum = this.shop.length;
+          if (this.shop.length < 1) {
+            this.shoppingCatFooterTop = 439;
+            this.halfChecked = false;
+            this.allChecked = false;
+            this.shoppingCatSettlementFooterBtn = false;
+            this.allCheckedBool = false;
+          } else {
+            this.shoppingCatFooterTop = (this.shop.length + 1) * 125;
+          }
         });
       }
     },
     watch: {
       shoppingBool(val) {
         if (val) {
+          if (sessionStorage.getItem("uid") == null) {
+            this.$message("请登录");
+            this.shoppingBool = false;
+          } else {
+            this.seShoppingCatGoods();
+          }
           this.allChecked = false;
         }
       },
@@ -351,12 +368,12 @@
           }
           // 计算选中的按钮的总价
           this.shoppingCatPriceSumCalculate();
+          this.$parent.shoppingCatNumSum = this.shop.length;
         },
         deep: true
       }
     },
     created() {
-      this.shoppingCatFooterTop = (this.shop.length + 1) * 125;
       this.seShoppingCatGoods();
     }
   }

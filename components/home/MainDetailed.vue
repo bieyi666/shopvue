@@ -1,7 +1,7 @@
 <template>
   <div style="height: 100%;width: 1385px;margin-top: -8px;margin-left: -27px">
     <shopping-cat-com/>
-    <el-badge :value="1" class="shopping_cart_btn_item" type="primary">
+    <el-badge :value="shoppingCatNumSum" class="shopping_cart_btn_item" type="primary">
       <el-button @click="$children[0].shoppingBool = true" icon="el-icon-shopping-cart-1" circle type="warning" class="shopping_cart_btn"></el-button>
     </el-badge>
     <el-container>
@@ -192,6 +192,7 @@
           {img: "./src/assets/image/logo.png"},
           {img: "./src/assets/image/logo.png"}],
         imgaa: '',
+        shoppingCatNumSum: 0
       }
     },
     methods: {

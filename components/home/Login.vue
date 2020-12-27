@@ -87,6 +87,7 @@
                 message: result.data.msg,
                 type: 'success'
               });
+
               sessionStorage.setItem("username",result.data.username);
               sessionStorage.setItem("uid",result.data.uid);
 
