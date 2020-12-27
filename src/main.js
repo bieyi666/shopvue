@@ -50,14 +50,14 @@ Array.prototype.indexOf = function (val) {
  * @param attribute 属性
  * @param conditions 条件
  * 即 arr.age(属性) === 1(条件)
- * @returns {[]} 被删除的元素数组
+ * @returns {[]} 被删除的元素id数组
  */
 Array.prototype.remove = function (attribute, conditions) {
   let length = this.length;
   let result = []
   for (let i = 0, j = 0; i < length; i++, j++) {
     if (this[j][attribute] === conditions) {
-      result.push(this[j]);
+      result.push(this[j].id);
       this.splice(j, 1);
       j--;
     }

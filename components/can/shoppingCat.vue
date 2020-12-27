@@ -34,8 +34,8 @@
           <el-table-column width="112px">
             <template slot-scope="scope">
               <el-image
-                :src="'../../src/assets/test/'+scope.row.img"
-                :preview-src-list="['../../src/assets/test/'+scope.row.img]">
+                :src="$host+scope.row.img"
+                :preview-src-list="[$host+scope.row.img]">
               </el-image>
             </template>
           </el-table-column>
@@ -105,7 +105,7 @@
         <!--总价格-->
         <div class="shoppingPriceSumFooter">
           <span>合计(不含运费)：</span>
-          <span class="span">￥150002.88</span>
+          <span class="span">￥{{shoppingCatPriceSum}}</span>
         </div>
       </div>
     </div>
@@ -122,85 +122,7 @@
         // 动画，开始动画和结束动画
         shoppingViewClass: "shoppingViewAn",
         // 商品数组
-        shop: [
-          {
-            id: 1,
-            name: "ak47",
-            inventory: 200,
-            number: 1,
-            price: 1300,
-            img: "ak47.jpg",
-            type: "自动步枪",
-            subtotal: 1300,
-            checked: false
-          },
-          {
-            id: 2,
-            name: "ak74",
-            inventory: 150,
-            number: 1,
-            price: 2300,
-            img: "ak74.jpg",
-            type: "突击步枪",
-            subtotal: 2300,
-            checked: false
-          },
-          {
-            id: 3,
-            name: "HK416",
-            inventory: 50,
-            number: 1,
-            price: 2400,
-            img: "HK416.jpg",
-            type: "自动步枪",
-            subtotal: 2400,
-            checked: false
-          },
-          {
-            id: 4,
-            name: "m4a1",
-            inventory: 500,
-            number: 1,
-            price: 1400,
-            img: "m4a1.jpg",
-            type: "突击步枪",
-            subtotal: 1400,
-            checked: false
-          },
-          {
-            id: 5,
-            name: "mk47",
-            inventory: 20,
-            number: 1,
-            price: 3500,
-            img: "mk47.jpg",
-            type: "自动步枪",
-            subtotal: 3500,
-            checked: false
-          },
-          {
-            id: 6,
-            name: "uzi",
-            inventory: 600,
-            number: 1,
-            price: 1000,
-            img: "uzi.jpg",
-            type: "冲锋枪",
-            subtotal: 1000,
-            checked: false
-          },
-          {
-            id: 7,
-            name: "s686",
-            inventory: 100,
-            number: 1,
-            price: 800,
-            img: "s686.jpg",
-            type: "霰弹枪",
-            subtotal: 800,
-            checked: false
-          },
-        ],
+        shop: [],
         // 删除按钮是否显示
         editCloseBtn: false,
         // 提示 编辑/完成
@@ -220,7 +142,9 @@
         // 页脚的位置，随商品的对少变化
         shoppingCatFooterTop: 0,
         // 全选框是否能用
-        allCheckedBool: true
+        allCheckedBool: true,
+        // 总价
+        shoppingCatPriceSum: 0
       }
     },
     methods: {
@@ -245,7 +169,7 @@
         this.shoppingCloseBtnBool = false;
         //
         setTimeout(() => {
-          this.shoppingCatFooterClass = "";
+          this.shoppingCatFooterClass = "shoppingCatFooter";
         }, 1);
         // 动画执行完毕后关闭页面
         setTimeout(() => {
@@ -274,7 +198,7 @@
           }
         });
       },
-      // 删除当前行商品 row 行数据
+      // 删除当前行商品  row 行数据
       CloseGoodsBtnClick(row) {
         // 弹出提示框，您确定要删除该商品吗？
         this.$confirm('您确定要删除该商品吗？', '删除', {
@@ -287,6 +211,8 @@
             duration: 1000
           });
         }).catch(() => {
+          // 将这个变成true 让监听可以满足条件
+          this.shoppingCheckBox = true;
           // 先删除页面商品数组中的商品
           this.shop.forEach((item, index) => {
             if (item.id === row.id) {
@@ -294,10 +220,10 @@
             }
           });
           // 再删除后台购物车表中的商品
-          this.$message({
-            type: 'success',
-            message: '删除成功!',
-            duration: 1000
+          let data = new URLSearchParams();
+          data.set("id", row.id);
+          this.$axios.post("delShoppingCat.action", data).then((r) => {
+            this.$message(r.data ? "删除成功" : "删除失败");
           });
         });
       },
@@ -320,14 +246,45 @@
             // 删除选中的商品
             let goods = this.shop.remove("checked", true);
             // 删除数据库购物车表的数据
-            console.log(goods);
+            let data = new URLSearchParams();
+            data.set("str", JSON.stringify(goods));
+            this.$axios.post("delShoppingCatBat.action", data).then((r) => {
+              this.$message(r.data ? "删除成功" : "删除失败");
+            });
           });
         } else {
           this.$message({message: "请选择您要删除的商品", type: "warning"});
         }
+      },
+      // 计算总价
+      shoppingCatPriceSumCalculate() {
+        let sumPrice = 0;
+        this.shop.forEach((item) => {
+          if (item.checked) {
+            sumPrice += item.subtotal;
+          }
+        });
+        this.shoppingCatPriceSum = sumPrice;
+      },
+      // 查询该用户的购物车商品
+      seShoppingCatGoods() {
+        let data = new URLSearchParams();
+        data.set("uid", sessionStorage.getItem("uid"));
+        this.$axios.post("seShoppingCat.action", data).then((result) => {
+          result.data.forEach((item) => {
+            item.forEach((item1) => {
+              this.shop.push(item1);
+            });
+          });
+        });
       }
     },
     watch: {
+      shoppingBool(val) {
+        if (val) {
+          this.allChecked = false;
+        }
+      },
       allChecked(val) {
         if (val) {
           this.shop.forEach((item) => {
@@ -348,29 +305,32 @@
               let a = 0;
               val.forEach((item) => {
                 if (!item.checked) {
+                  // 判断是否有未选中的
                   a = 1;
                 }
               });
-              if (a === 1) {
+              if (a === 1) { // 如果有则进入下一步判断
                 val.forEach((item) => {
-                  if (item.checked) {
+                  if (item.checked) { // 判断是否有选中的
                     a = 2;
                   }
                 });
-                if (a === 2) {
+                if (a === 2) { // 如果有选中的，则为半选状态
                   this.shoppingCatSettlementFooterBtn = true;
                   this.halfChecked = true;
-                } else {
+                } else { // 没有选中的则为未选中状态
                   this.halfChecked = false;
                   this.allChecked = false;
                   this.shoppingCatSettlementFooterBtn = false;
                 }
               } else {
+                // 没有则全选框选中
                 this.halfChecked = false;
                 this.allChecked = true;
                 this.shoppingCatSettlementFooterBtn = true;
               }
             } else {
+              // 如果shop数组为0则按钮都变为不可用
               this.halfChecked = false;
               this.allChecked = false;
               this.shoppingCatSettlementFooterBtn = false;
@@ -389,12 +349,15 @@
           } else {
             this.shoppingCatFooterTop = 439;
           }
+          // 计算选中的按钮的总价
+          this.shoppingCatPriceSumCalculate();
         },
         deep: true
       }
     },
     created() {
       this.shoppingCatFooterTop = (this.shop.length + 1) * 125;
+      this.seShoppingCatGoods();
     }
   }
 </script>
@@ -477,7 +440,7 @@
   }
 
   .goodsName {
-    margin-left: 30px;
+    margin-left: 10px;
   }
 
   .elIconCloseBtn {
