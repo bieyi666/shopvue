@@ -2,8 +2,9 @@
   <!--background-color: aqua;-->
   <div style="height: 100%;width: 1385px;margin-top: -8px;margin-left: -27px">
     <shopping-cat-com/>
-    <el-badge :value="3" class="shopping_cart_btn_item" type="primary">
-      <el-button @click="startShoppingCat" icon="el-icon-shopping-cart-1" circle type="warning" class="shopping_cart_btn"></el-button>
+    <el-badge :value="shoppingCatNumSum" class="shopping_cart_btn_item" type="primary">
+      <el-button @click="$children[0].shoppingBool = true" icon="el-icon-shopping-cart-1" circle type="warning"
+                 class="shopping_cart_btn"></el-button>
     </el-badge>
     <el-container>
       <el-header style="height: 50px;">
@@ -78,7 +79,7 @@
             <el-row>
               <el-col :span="2">&emsp;</el-col>
               <el-col :span="4">
-                <el-image style="width:100%;height:100%;object-fit: cover;"
+                <el-image style="width:100%;height:100%;object-fit: cover;" @click="hui"
                           src="./src/assets/image/logo.png"></el-image>
               </el-col>
               <el-col :span="3">&emsp;</el-col>
@@ -96,8 +97,11 @@
               </el-col>
               <el-col :span="4">
                 <div style="margin-top: 30px">
-                  <el-button round><i class="el-icon-shopping-cart-2" style="font-size: 18px"></i>&emsp;<a
-                    style="font-size: 18px">购物车</a></el-button>
+                  <el-badge :value="shoppingCatNumSum" class="shopping_cart_btn_item1" type="primary">
+                    <el-button @click="$children[0].shoppingBool = true" round><i class="el-icon-shopping-cart-2"
+                                                                                  style="font-size: 18px"></i>&emsp;<a
+                      style="font-size: 18px">购物车</a></el-button>
+                  </el-badge>
                 </div>
               </el-col>
             </el-row>
@@ -105,24 +109,18 @@
           <el-row>
             <el-col :span="2"> &emsp;</el-col>
             <el-col :span="20">
-              <el-tabs v-model="activeName" @tab-click="handleClick" :style="{width:b,height:s,backgroundcolor:t} ">
-                <el-tab-pane label="茶具茶叶" name="first">
-                  <div v-for="mm in cheye">
-                    <div style="width: 100px;height: 200px; float: left;text-align:center;">
-                      <a>{{mm.zhutou}}</a>
+              <el-tabs @tab-click="handleClick" v-model="activeName" :style="{width:b,height:s,backgroundcolor:t}">
+                <el-tab-pane :label="type.tname" :name="type.tid" v-for="type in cheye">
+                  <div>
+                    <div style="width: 100px;height: 200px; float: left;text-align:center;" v-for="mm in chtype">
+                      <a>{{mm.tname}}</a>
                       <hr style="width: 70px;">
-                      <a>{{mm.ci[0].yi}}</a>
+                      <a v-for="aa in chcype" v-if="mm.tid==aa.tsan" @click="queyrCname(aa.tid)">{{aa.tname}}<br></a>
                       <br>
-                      <a>{{mm.ci[0].er}}</a>
-                      <br>
-                      <a>{{mm.ci[0].san}}</a>
-                      <br>
-                      <a>{{mm.ci[0].si}}</a>
                       <br>
                     </div>
                   </div>
                 </el-tab-pane>
-                <el-tab-pane label="电子设配" name="second">电子设配</el-tab-pane>
               </el-tabs>
             </el-col>
             <el-col :span="2"> &emsp;</el-col>
@@ -170,14 +168,19 @@
                     </div>
                   </div>
                   <div style="height: 100%; width: 74%; float: left">
-                    <div style="width: 275px; height: 50%;background-color: #ffffff;float: left" v-for="aam in tu"
-                         @click="gou(aam.cid)">
-                      <el-image style="width: 100%;height: 60%;" :src="aam.picture"></el-image>
+                    <div style="width: 275px; height: 50%;background-color: #ffffff;float: left" v-for="aam in tu">
+                      <div @click="gou(aam.cid)">
+                        <el-card shadow="hover" style="width: 270px;height: 160px;margin-left: 2px">
+                          <el-image style="width: 260px;height: 140px;top: -10px;left: -15px"
+                                    :src="aam.picture"></el-image>
+                        </el-card>
+                      </div>
                       <div style="width: 100%;height: 40%;text-align:center;">
                         <br>
-                        <span>{{aam.cname}}</span>
+                        <span @click="gou(aam.cid)">{{aam.cname}}</span>
                         <br>
-                        <span style="color: red">￥<span style="color: red">{{aam.price}}</span></span>
+                        <span @click="gou(aam.cid)" style="color: red">￥<span
+                          style="color: red">{{aam.price}}</span></span>
                       </div>
                     </div>
                   </div>
@@ -187,7 +190,7 @@
             </el-row>
 
           </div>
-          <br>
+          <br> <br> <br>
           <div style="width: 1350px">
             <el-row style="background-color: #f4f0ea">
               <el-col :span="2">&emsp;</el-col>
@@ -210,14 +213,19 @@
                     </div>
                   </div>
                   <div style="height: 100%; width: 74%; float: left">
-                    <div style="width: 275px; height: 50%;background-color: #ffffff;float: left" v-for="aam in Ak47"
-                         @click="gou(aam.cid)">
-                      <el-image style="width: 100%;height: 60%;" :src="aam.picture"></el-image>
+                    <div style="width: 275px; height: 50%;background-color: #ffffff;float: left" v-for="aam in Ak47">
+                      <div @click="gou(aam.cid)">
+                        <el-card shadow="hover" style="width: 270px;height: 160px;margin-left: 2px">
+                          <el-image style="width: 260px;height: 140px;top: -10px;left: -15px"
+                                    :src="aam.picture"></el-image>
+                        </el-card>
+                      </div>
                       <div style="width: 100%;height: 40%;text-align:center;">
                         <br>
-                        <span>{{aam.cname}}</span>
+                        <span @click="gou(aam.cid)">{{aam.cname}}</span>
                         <br>
-                        <span style="color: red">￥<span style="color: red">{{aam.price}}</span></span>
+                        <span @click="gou(aam.cid)" style="color: red">￥<span
+                          style="color: red">{{aam.price}}</span></span>
                       </div>
                     </div>
                   </div>
@@ -237,14 +245,11 @@
         </div>
       </el-footer>
     </el-container>
-
-
     <!--    登录-->
     <el-dialog
       class="dialog"
       :visible.sync="dialogVisible"
       width="50%"
-      :before-close="handleClose"
       center>
       <span>
         <router-view>
@@ -257,11 +262,12 @@
     <!--AAA-->
   </div>
   <!--aa-->
+
 </template>
 
 <script>
-
   import ShoppingCatCom from "../can/shoppingCat";
+
   export default {
     name: "MainPage",
     components: {ShoppingCatCom},
@@ -274,42 +280,53 @@
         s: "",
         show: false,
         shoa: true,
+        activeName: '',
         onLine: navigator.onLine,
         imageaa: [{image: "./src/assets/image/page1.jpg"},
           {image: "./src/assets/image/page2.png"},
           {image: "./src/assets/image/page3.jpg"},
           {image: "./src/assets/image/page4.jpg"},
           {image: "./src/assets/image/page5.jpg"},],
-        cheye: [{zhutou: "茶具", ci: [{yi: "1", er: "2", san: "w", si: "2"}]},
-          {zhutou: "茶具", ci: [{yi: "1", er: "4", san: "d", si: "a"}]},
-          {zhutou: "茶具", ci: [{yi: "1", er: "3", san: "a", si: "z"}]},
-          {zhutou: "茶具", ci: [{yi: "1", er: "2", san: "2", si: "q"}]}],
+        cheye: [{}],
+        chtype: [{}],
+        chcype: [{}],
         tu: [],
         Ak47: [],
+        shoppingCatNumSum: 0,
       }
     },
     methods: {
-      // 打开购物车
-      startShoppingCat() {
-        this.$children[0].shoppingBool = true;
-      },
       handleClick(tab, event) {
         console.log(tab, event);
-        if (tab.name == "second") {
-          // 触发‘配置管理’事件
-          this.second();
-        } else if (tab.name == "first") {
-          // 触发‘用户管理’事件
-          this.first();
-        }
+        this.cheye.forEach(item => {
+          if (tab.name == item.tid) {
+            // 触发‘配置管理’事件
+            this.second(item.tid);
+          }
+        })
       },
-      first() {
-        this.t = "red";
-        this.b = "100%";
-        this.s = "200px";
-      },
-      second() {
+      second(data) {
+        var _this = this;
+        this.$axios.post("queryAllzho.action?ter=" + data).then(function (result1) {
+          _this.chtype = result1.data;
+          _this.$axios.post("queryAllciq.action?ter=" + data).then(function (result) {
+            _this.chcype = result.data;
+          }).catch(function (error) {
+            alert(error)
+          })
+        }).catch(function (error) {
+          alert(error)
+        })
 
+      },
+      //异步查询主数据
+      getAllCommType() {
+        var _this = this;
+        this.$axios.post("queryAllzhu.action").then(function (result) {
+          _this.cheye = result.data;
+        }).catch(function (error) {
+          alert(error)
+        })
       },
       //打开登录/注册
       login() {
@@ -319,7 +336,7 @@
       //注销
       logout() {
         sessionStorage.removeItem("username");  //从浏览器session清空数据
-        sessionStorage.removeItem("userid");
+        sessionStorage.removeItem("uid");
         this.show = !this.show;
         this.shoa = !this.shoa;
         this.$message({
@@ -327,6 +344,7 @@
           message: '注销成功',
           type: 'error'
         });
+        this.shoppingCatNumSum = 0;
       },
       //展示商品
       getAllCommodityyou() {
@@ -365,6 +383,13 @@
         sessionStorage.setItem("cname", cname);
         this.$router.push("/goodsquery")
       },
+      //查询商品
+      //点击查询带id调整页面
+      queyrCname(index) {
+        sessionStorage.setItem("tid", index);
+        sessionStorage.setItem("cname", ' ');
+        this.$router.push("/goodsquery");
+      },
       //页面进来判断是否登录
       EF() {
         var ca = sessionStorage.getItem("username");
@@ -386,6 +411,10 @@
         } else {
           this.$router.push("/userCenter")
         }
+      },
+      //返回首页
+      hui() {
+        this.$router.push("/mainPage")
       }
     },
     //挂钩子
@@ -393,7 +422,7 @@
       this.EF();
       this.getAllCommodityAK();
       this.getAllCommodityyou();
-
+      this.getAllCommType();
     }
   }
 
@@ -428,6 +457,11 @@
   .shopping_cart_btn_item .el-badge__content.is-fixed {
     top: -21px;
     right: 47px;
+  }
+
+  .shopping_cart_btn_item1 .el-badge__content.is-fixed {
+    top: 5px;
+    right: 15px;
   }
 
   .el-badge__content {
