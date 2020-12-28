@@ -92,7 +92,7 @@
        */
       updateMerchantInfo(){
         /* formData格式提交： */
-        console.log(this.storeFrom)
+        var _this=this;
         this.storeFrom.photo="";
         let formData = new FormData();
         for(var key in this.storeFrom){
@@ -109,8 +109,23 @@
 
           data:formData
         }).then((res)=>{
-          alert(res.data)
-          this.$router.push("/merchantMain")
+          if (res.data == '修改成功'){
+            _this.$message({
+              message: '修改成功',
+              type: 'success'
+            });
+            _this.$router.push({path: '/hc'});
+            setTimeout(() => {
+              _this.$router.push({path: '/MerchantMain'});
+            }, 1);
+          }else {
+            _this.$message({
+              message: '修改失败',
+              type: 'error'
+            });
+          }
+
+
         }).catch((reason => {
           alert(reason)
         }));

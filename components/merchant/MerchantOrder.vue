@@ -107,10 +107,13 @@
               待确认送达
             </span>
             <span v-if="scope.row.state2 === 1">
-              <span v-if="scope.row.state3 === 0">
+              <span v-if="scope.row.state3 === 1">
+              待付款
+              </span>
+             <span v-if="scope.row.state3 === 2">
               待取货
               </span>
-             <span v-if="scope.row.state3 === 1">
+              <span v-if="scope.row.state3 === 3">
               已取货
               </span>
             </span>
@@ -139,6 +142,18 @@
         </template>
       </el-table-column>
     </el-table>
+    <!--        分页-->
+    <div class="block">
+      <el-pagination
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+        :page-sizes="[5, 10, 15, 20]"
+        :page-size="5"
+        layout="total, sizes, prev, pager, next, jumper"
+        :total="total">
+      </el-pagination>
+    </div>
+
   </div>
 </template>
 
@@ -196,6 +211,9 @@
             }]
         },
         tableData: [],
+        rows:'',
+        page:'',
+        total:0,
         search: '',
         value2: '',
         orderTime1: null,
@@ -203,6 +221,16 @@
       }
     },
     methods: {
+      //pageSize（每页条数） 改变时触发
+      handleSizeChange(val) {
+        this.rows = val;
+        this.getOrderData();
+      },
+      //改变页码时触发
+      handleCurrentChange(val) {
+        this.page = val;
+        this.getOrderData();
+      },
       //获取订单数据
       getOrderData() {
         var _this = this;
@@ -210,10 +238,13 @@
         params.append("storeid", 1);
         params.append("orderTime1", this.orderTime1);
         params.append("orderTime2", this.orderTime2);
+        params.append("page", this.page);
+        params.append("rows", this.rows);
         this.$axios.get("queryAllOrderInfoBySid.action", {
           params
         }).then(function (result) {
           _this.tableData = result.data.rows;
+          _this.total = result.data.total;
         }).catch(function (error) {
           alert(error)
         })

@@ -99,6 +99,7 @@
         var _this = this;
         this.$axios.get("pdStore.action?uid=" + _this.usersId)
           .then(function (result) {
+            sessionStorage.setItem("storeid",result.data.storeId)
             if(result.data.name===undefined){
               _this.display1=false;
               _this.display2=true;
