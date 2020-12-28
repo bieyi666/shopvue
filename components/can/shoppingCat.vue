@@ -93,14 +93,14 @@
         </div>
         <!--数量-->
         <div class="shoppingNumberFooter">
-          <span>共5件商品， 已选择
-            <span style="color: #00c3f5;font-size: 15px;margin-right: 3px">0</span>件
+          <span>共{{this.shop.length}}件商品， 已选择
+            <span style="color: #00c3f5;font-size: 15px;margin-right: 3px">{{shoppingCatCheckedNumber}}</span>件
           </span>
         </div>
         <!--结算-->
         <div class="shoppingCatSettlementFooter">
           <el-button type="danger" size="mini" disabled v-if="!shoppingCatSettlementFooterBtn">去结算</el-button>
-          <el-button type="danger" size="mini" v-else>去结算</el-button>
+          <el-button type="danger" size="mini" v-else @click="ShoppingCatSettlement">去结算</el-button>
         </div>
         <!--总价格-->
         <div class="shoppingPriceSumFooter">
@@ -144,7 +144,15 @@
         // 全选框是否能用
         allCheckedBool: true,
         // 总价
-        shoppingCatPriceSum: 0
+        shoppingCatPriceSum: 0,
+        // 已选择数量
+        shoppingCatCheckedNumber: 0,
+        payInfo: {
+          outTradeNo: "10011222005454",
+          subject: "ak47",
+          totalAmount: 1,
+          body: "nice"
+        }
       }
     },
     methods: {
@@ -256,6 +264,17 @@
           this.$message({message: "请选择您要删除的商品", type: "warning"});
         }
       },
+      //
+      GoodsDelChecked1() {
+        // 将这个变成true 让监听可以满足条件
+        this.shoppingCheckBox = true;
+        // 删除选中的商品
+        let goods = this.shop.remove("checked", true);
+        // 删除数据库购物车表的数据
+        let data = new URLSearchParams();
+        data.set("str", JSON.stringify(goods));
+        this.$axios.post("delShoppingCatBat.action", data);
+      },
       // 计算总价
       shoppingCatPriceSumCalculate() {
         let sumPrice = 0;
@@ -288,6 +307,39 @@
             this.shoppingCatFooterTop = (this.shop.length + 1) * 125;
           }
         });
+      },
+      // 结算
+      ShoppingCatSettlement() {
+        // 生成订单
+        let str = [];
+        this.shop.forEach((item) => {
+          if (item.checked) {
+            str.push({goodsid: item.sid, number: item.number});
+          }
+        });
+        let data = new URLSearchParams();
+        data.set("str", JSON.stringify(str));
+        data.set("uid", sessionStorage.getItem("uid"));
+        this.$axios.post("inOrderInfo1.action", data).then((r) => {
+          if (r.data > 0) {
+            sessionStorage.setItem("message", r.data);
+            this.GoodsDelChecked1()
+          }
+        });
+
+
+        // this.payInfo.totalAmount = this.shoppingCatPriceSum;
+        // let formData = new FormData();
+        // Object.keys(this.payInfo).forEach((key) => {
+        //   formData.append(key, this.payInfo[key]);
+        // });
+        // this.$axios.post('alipay.action', formData).then((r) => {
+        //   const div = document.createElement('div')
+        //   div.innerHTML = r.data // data就是接口返回的form 表单字符串
+        //   document.body.appendChild(div)
+        //   document.forms[0].setAttribute('target', '_blank') // 新开窗口跳转
+        //   document.forms[0].submit()
+        // });
       }
     },
     watch: {
@@ -335,16 +387,19 @@
                 if (a === 2) { // 如果有选中的，则为半选状态
                   this.shoppingCatSettlementFooterBtn = true;
                   this.halfChecked = true;
+                  this.shoppingCatCheckedNumber = this.shop.search("checked", true).size;
                 } else { // 没有选中的则为未选中状态
                   this.halfChecked = false;
                   this.allChecked = false;
                   this.shoppingCatSettlementFooterBtn = false;
+                  this.shoppingCatCheckedNumber = 0;
                 }
               } else {
                 // 没有则全选框选中
                 this.halfChecked = false;
                 this.allChecked = true;
                 this.shoppingCatSettlementFooterBtn = true;
+                this.shoppingCatCheckedNumber = this.shop.length;
               }
             } else {
               // 如果shop数组为0则按钮都变为不可用
@@ -352,6 +407,7 @@
               this.allChecked = false;
               this.shoppingCatSettlementFooterBtn = false;
               this.allCheckedBool = false;
+              this.shoppingCatCheckedNumber = 0;
             }
             this.shoppingCheckBox = false;
           }
