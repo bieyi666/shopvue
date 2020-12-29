@@ -101,7 +101,7 @@
                    v-for="aam in CommodityData" >
                 <div @click="gou(aam.cid)">
                   <el-card shadow="hover" style="width: 260px;height: 190px">
-                    <el-image style="width: 100%;height: 150px;" :src="aam.picture"></el-image>
+                    <el-image style="width: 100%;height: 150px;" :src="'http://localhost:8080/img/'+aam.picture"></el-image>
                   </el-card>
                 </div>
                 <div style="width: 100%;height: 40%;text-align:center;">

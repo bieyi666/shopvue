@@ -6,8 +6,7 @@
     <div style="margin-left: 150px">
       <h1>登录</h1>
     </div>
-    <el-row>
-
+    <el-row><!--aa-->
       <el-col :span="24">
         <el-form :model="ruleForm" status-icon :rules="rules" ref="ruleForm" label-width="100px"
                  style="width: 300px"

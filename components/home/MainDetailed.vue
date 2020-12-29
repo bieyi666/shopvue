@@ -107,14 +107,14 @@
                 <div style="width: 450px;height: 300px;">
                   <el-carousel>
                     <el-carousel-item v-for="item in shuju" :key="item">
-                      <el-image :src="item.img" style="width: 100%;height: 100%"></el-image>
+                      <el-image :src="'http://localhost:8080/img/'+item.picture" style="width: 100%;height: 100%"></el-image>
                     </el-carousel-item>
                   </el-carousel>
                 </div>
                 <br>
                 <div style="width: 450px; height: 90px; text-align: center">
                   <div style="width: 100px; height: 90px;float: left" v-for="aa in shuju">
-                    <el-image :src="aa.img" @click="imagea(aa.img)"></el-image>
+                    <el-image :src="'http://localhost:8080/img/'+aa.picture"></el-image>
                   </div>
                   <div style="float: left;"></div>
                 </div>
@@ -233,10 +233,12 @@
           alert(error);
           console.log(error);
         });
-      },
-      //图片切换
-      imagea(imguel) {
-        this.imgaa = this.shuju.img[1];
+        this.$axios.post("queryAllCommodityPrint.action?cId=" + cid).then(function (result) {
+          _this.shuju = result.data
+        }).catch(function (error) {
+          alert(error);
+          console.log(error);
+        });
       },
       //购买
       purchase() {

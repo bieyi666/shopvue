@@ -108,9 +108,11 @@
                 <el-tab-pane :label="type.tname" :name="type.tid" v-for="type in cheye">
                   <div>
                     <div style="width: 100px;height: 200px; float: left;text-align:center;" v-for="mm in chtype">
-                      <a>{{mm.tname}}</a>
+                      <el-tag type="danger">{{mm.tname}}</el-tag>
                       <hr style="width: 70px;">
-                      <a v-for="aa in chcype" v-if="mm.tid==aa.tsan" @click="queyrCname(aa.tid)">{{aa.tname}}<br></a>
+                      <a v-for="aa in chcype" v-if="mm.tid==aa.tsan" @click="queyrCname(aa.tid)">
+                        <el-tag type="success">{{aa.tname}}</el-tag>
+                        <br></a>
                       <br>
                       <br>
                     </div>
@@ -142,7 +144,7 @@
             </el-row>
           </div>
           <div style="width: 1350px">
-            <el-row style="background-color: #f4f0ea">
+            <el-row >
               <el-col :span="2">&emsp;</el-col>
               <el-col :span="20">
                 <div style="width: 100%;height: 500px;">
@@ -167,7 +169,7 @@
                       <div @click="gou(aam.cid)">
                         <el-card shadow="hover" style="width: 270px;height: 160px;margin-left: 2px">
                           <el-image style="width: 260px;height: 140px;top: -10px;left: -15px"
-                                    :src="aam.picture"></el-image>
+                                    :src="'http://localhost:8080/img/'+aam.picture"></el-image>
                         </el-card>
                       </div>
                       <div style="width: 100%;height: 40%;text-align:center;">
@@ -187,7 +189,7 @@
           </div>
           <br> <br> <br>
           <div style="width: 1350px">
-            <el-row style="background-color: #f4f0ea">
+            <el-row >
               <el-col :span="2">&emsp;</el-col>
               <el-col :span="20">
                 <div style="width: 100%;height: 500px;">
@@ -212,7 +214,7 @@
                       <div @click="gou(aam.cid)">
                         <el-card shadow="hover" style="width: 270px;height: 160px;margin-left: 2px">
                           <el-image style="width: 260px;height: 140px;top: -10px;left: -15px"
-                                    :src="aam.picture"></el-image>
+                                    :src="'http://localhost:8080/img/'+aam.picture"></el-image>
                         </el-card>
                       </div>
                       <div style="width: 100%;height: 40%;text-align:center;">
@@ -354,7 +356,7 @@
       getAllCommodityAK() {
         var _this = this;
         var params = new URLSearchParams()
-        params.append("page", "1");
+        params.append("page", "2");
         params.append("rows", "6");
         //异步
         this.$axios.post("queryAllCommodity.action", params).then(function (result) {
