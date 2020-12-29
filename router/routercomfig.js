@@ -40,6 +40,7 @@ import MerchantIncome from '../components/merchant/MerchantIncome.vue'
 import TestECharts from "../components/merchant/TestECharts";
 import TestUpload from "../components/merchant/TestUpload";
 
+import Success from "../components/can/Success";
 
 
 //Vue组件使用Vue-router组件   mark
@@ -64,7 +65,11 @@ var routes = [
         component: Register
       }
     ]
+  },{
+    //支付成功
+    path: '/success', component: Success,
   },
+
   {
     path: '/mainDetailed',component: MainDetailed,
     children: [
