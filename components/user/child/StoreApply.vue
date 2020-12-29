@@ -107,9 +107,9 @@
             'Content-Type': 'multipart/form-data'
           }
         })
-          .then(function (response) {
+          .then(function () {
               alert("提交申请成功")
-            dialogVisible: false;
+            _this.dialogVisible=false;
           })
           .catch(function (error) {
             alert(error)

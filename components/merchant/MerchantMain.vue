@@ -1,7 +1,8 @@
 <!--商户主页-->
 <template>
-    <div>
-      这里是主页内容
+    <div style="height: 400px">
+     <el-image style="width: 100%;height: 100%;border-radius: 10px" src="src/assets/merchant-1.jpg"></el-image>
+
     </div>
 </template>
 

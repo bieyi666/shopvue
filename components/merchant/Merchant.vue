@@ -27,7 +27,7 @@
     <div id="merchant_Header" class="bgColors">
       <el-row>
         <el-col :span="2" :offset="1" style="margin-top: 10px">
-          <el-image src="F:/upload/1608518477051.jpg"></el-image>
+          <el-image :src="this.$host+'30.png'"></el-image>
         </el-col>
 
         <el-col :span="2" :offset="1" style="margin-top: 35px">
@@ -43,11 +43,27 @@
           </span>
         </el-col>
 
+
         <el-col :span="2" style="margin-top: 35px">
           <span style="font-size: 24px;color: #CC9756">
             <router-link to="/mainPage">
               购物中心
             </router-link>
+          </span>
+        </el-col>
+
+        <el-col :span="2" style="margin-top: 35px">
+          <span style="font-size: 24px;color: #CC9756">
+            <router-link to="/userCenter">
+              用户中心
+            </router-link>
+          </span>
+        </el-col>
+        <el-col :span="2" style="margin-top: 35px">
+          <span style="font-size: 24px;color: #CC9756">
+           <el-tooltip class="item" effect="dark" content="刷新" placement="bottom">
+      <i class="el-icon-refresh" @click="refresh($event)"></i>
+    </el-tooltip>
           </span>
         </el-col>
 
@@ -111,12 +127,12 @@
                 <el-menu-item index="2">
                   <i class="el-icon-document"></i>
                   <span slot="title">
-                  <router-link to="/merchantIncome">
+                  <router-link to="/testECharts">
                       我的收入
                   </router-link>
                    </span>
                 </el-menu-item>
-                <el-menu-item index="3">
+                <!--<el-menu-item index="3">
                   <i class="el-icon-document"></i>
                   <span slot="title">
                     <router-link to="/testECharts">
@@ -132,18 +148,18 @@
                       测试文件上传
                   </router-link>
                    </span>
-                </el-menu-item>
+                </el-menu-item>-->
               </el-menu>
             </el-col>
 
             <el-col :span="19">
               <!--主体内容-->
               <el-main class="bgColor" style="border-radius: 10px">
-                <div style="height: 250px">
-                  <el-image src="src/assets/merchant.jpg"
-                            style="width: 100%;height: 100%;border-radius: 10px"></el-image>
+                <div style="height: 100px">
+                  <el-image src="src/assets/merchant-3.gif"
+                            ></el-image>
                 </div>
-                <div>
+                <div style="margin-top:100px;">
                   <!--路由展示-->
                   <router-view>
 
@@ -171,6 +187,7 @@
     name: "merchant",
     data() {
       return {
+        storeid:sessionStorage.getItem("storeid"),
         usersId: sessionStorage.getItem('uid'),
         isCollapse: false, //初始打开菜单
         icon: "el-icon-s-fold", //折叠按钮图标
@@ -193,13 +210,21 @@
       //获取商户数据
       getStoreData() {
         var _this = this;
-        this.$axios.get("queryStoreByUid.action?uid=" + _this.usersId)
+        this.$axios.get("queryStoreByUid.action?uid=" + sessionStorage.getItem('uid'))
           .then(function (result) {
             _this.store = result.data;
           })
           .catch(function (error) {
             alert(error)
           })
+      },
+      refresh(e) {
+        console.log(e)
+        //let url = e.path[1].baseURI.substr(e.path[1].baseURI.lastIndexOf('/'));
+        this.$router.push({path: '/hc'});
+        setTimeout(() => {
+          this.$router.push({path: '/MerchantMain'});
+        }, 1);
       }
     },
     components: {},

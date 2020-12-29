@@ -1,8 +1,10 @@
 <template>
   <!--background-color: aqua;-->
   <div style="height: 100%;width: 1385px;margin-top: -8px;margin-left: -27px">
-    <el-badge :value="3" class="shopping_cart_btn_item" type="primary">
-      <el-button icon="el-icon-shopping-cart-1" circle type="warning" class="shopping_cart_btn"></el-button>
+    <shopping-cat-com/>
+    <el-badge :value="shoppingCatNumSum" class="shopping_cart_btn_item" type="primary">
+      <el-button @click="$children[0].shoppingBool = true" icon="el-icon-shopping-cart-1" circle type="warning"
+                 class="shopping_cart_btn"></el-button>
     </el-badge>
     <el-container>
       <el-header style="height: 50px;">
@@ -95,8 +97,11 @@
               </el-col>
               <el-col :span="4">
                 <div style="margin-top: 30px">
-                  <el-button round><i class="el-icon-shopping-cart-2" style="font-size: 18px"></i>&emsp;<a
-                    style="font-size: 18px">购物车</a></el-button>
+                  <el-badge :value="shoppingCatNumSum" class="shopping_cart_btn_item1" type="primary">
+                    <el-button @click="$children[0].shoppingBool = true" round><i class="el-icon-shopping-cart-2"
+                                                                                  style="font-size: 18px"></i>&emsp;<a
+                      style="font-size: 18px">购物车</a></el-button>
+                  </el-badge>
                 </div>
               </el-col>
             </el-row>
@@ -242,8 +247,6 @@
         </div>
       </el-footer>
     </el-container>
-
-
     <!--    登录-->
     <el-dialog
       class="dialog"
@@ -261,12 +264,15 @@
     <!--AAA-->
   </div>
   <!--aa-->
+
 </template>
 
 <script>
+  import ShoppingCatCom from "../can/shoppingCat";
 
   export default {
     name: "MainPage",
+    components: {ShoppingCatCom},
     data() {
       return {
         dialogVisible: false,
@@ -288,6 +294,7 @@
         chcype: [{}],
         tu: [],
         Ak47: [],
+        shoppingCatNumSum: 0,
       }
     },
     methods: {
@@ -331,7 +338,7 @@
       //注销
       logout() {
         sessionStorage.removeItem("username");  //从浏览器session清空数据
-        sessionStorage.removeItem("userid");
+        sessionStorage.removeItem("uid");
         this.show = !this.show;
         this.shoa = !this.shoa;
         this.$message({
@@ -339,6 +346,7 @@
           message: '注销成功',
           type: 'error'
         });
+        this.shoppingCatNumSum = 0;
       },
       //展示商品
       getAllCommodityyou() {
@@ -451,6 +459,11 @@
   .shopping_cart_btn_item .el-badge__content.is-fixed {
     top: -21px;
     right: 47px;
+  }
+
+  .shopping_cart_btn_item1 .el-badge__content.is-fixed {
+    top: 5px;
+    right: 15px;
   }
 
   .el-badge__content {

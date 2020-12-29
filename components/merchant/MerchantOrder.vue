@@ -18,7 +18,7 @@
     </div>
 
     <el-table
-      :data="tableData"
+      :data="tableData.filter(data => !search || data.userInfo.uname.toLowerCase().includes(search.toLowerCase()))"
       style="width: 100%">
       <el-table-column type="expand">
         <template slot-scope="props">
@@ -81,13 +81,19 @@
         width="180px">
         <template slot-scope="scope">
           <el-popover trigger="hover" placement="top">
+
             <div v-for="o in scope.row.orderGoods">
+
               名称：{{o.commodity.cname}}
               <br>
               价格：{{o.commodity.price}}
               <br>
               数量：{{o.number}}
+              <br>
+              预估收益：{{(o.commodity.price - o.commodity.purchasePrice) * 0.05 * 5}}
               <hr>
+            </div>
+            <div>
             </div>
             <div slot="reference" class="name-wrapper">
               <el-tag>查看商品</el-tag>
@@ -97,24 +103,46 @@
       </el-table-column>
       <el-table-column
         label="状态"
+
       >
+        <template slot="header">
+          <el-dropdown @command="handleCommand">
+  <span class="el-dropdown-link">
+    状态<i class="el-icon-arrow-down el-icon--right"></i>
+  </span>
+            <el-dropdown-menu slot="dropdown">
+              <el-dropdown-item command="1">待付款</el-dropdown-item>
+              <el-dropdown-item command="2">待发货</el-dropdown-item>
+              <el-dropdown-item command="3">待确认收货</el-dropdown-item>
+              <el-dropdown-item command="4">已收货</el-dropdown-item>
+            </el-dropdown-menu>
+          </el-dropdown>
+
+
+        </template>
         <template slot-scope="scope">
-          <span v-if="scope.row.state1 === 0">
-            未发货
-          </span>
-          <span v-if="scope.row.state1 === 1">
-            <span v-if="scope.row.state2 === 0">
-              待确认送达
-            </span>
-            <span v-if="scope.row.state2 === 1">
-              <span v-if="scope.row.state3 === 0">
-              待取货
-              </span>
-             <span v-if="scope.row.state3 === 1">
-              已取货
-              </span>
+           <span v-if="scope.row.state3 === 1">
+              待付款
+           </span>
+          <span v-if="scope.row.state3 != 1 ">
+
+            <span v-if="scope.row.state1 === 0">
+              未发货
             </span>
 
+            <span v-if="scope.row.state1 === 1">
+              <span v-if="scope.row.state2 === 0">
+                待确认收货
+              </span>
+              <span v-if="scope.row.state2 === 1">
+               <span v-if="scope.row.state3 === 2">
+                待取货
+                </span>
+                <span v-if="scope.row.state3 === 3">
+                已收货
+                </span>
+              </span>
+            </span>
           </span>
         </template>
       </el-table-column>
@@ -126,19 +154,33 @@
             size="mini"
             placeholder="输入关键字搜索"/>
 
+
         </template>
         <template slot-scope="scope">
-          <div v-if="scope.row.state1 === 1 && scope.row.state2 === 0">
+          <div v-if="scope.row.state1 === 1 && scope.row.state2 === 0 && scope.row.state3 != 1">
             <el-button
               size="mini"
               type="danger"
-              @click="handleDelete(scope.$index, scope.row)">确认送达
+              @click="updateOrder(scope.$index, scope.row)">确认送达
             </el-button>
           </div>
 
         </template>
+
       </el-table-column>
     </el-table>
+    <!--        分页-->
+    <div class="block">
+      <el-pagination
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+        :page-sizes="[5, 10, 15, 20]"
+        :page-size="5"
+        layout="total, sizes, prev, pager, next, jumper"
+        :total="total">
+      </el-pagination>
+    </div>
+
   </div>
 </template>
 
@@ -196,27 +238,75 @@
             }]
         },
         tableData: [],
+        rows: '',
+        page: '',
+        total: 0,
         search: '',
         value2: '',
         orderTime1: null,
-        orderTime2: null
+        orderTime2: null,
+        state: "",
+        sumPrice:0,
       }
     },
     methods: {
+      handleCommand(command) {
+        this.state = command;
+        this.getOrderData();
+      },
+      //pageSize（每页条数） 改变时触发
+      handleSizeChange(val) {
+        this.rows = val;
+        this.getOrderData();
+      },
+      //改变页码时触发
+      handleCurrentChange(val) {
+        this.page = val;
+        this.getOrderData();
+      },
       //获取订单数据
       getOrderData() {
         var _this = this;
         var params = new URLSearchParams();
-        params.append("storeid", 1);
+        var storeid = sessionStorage.getItem("storeid");
+        params.append("storeid", storeid);
         params.append("orderTime1", this.orderTime1);
         params.append("orderTime2", this.orderTime2);
+        params.append("page", this.page);
+        params.append("rows", this.rows);
+        params.append("state", this.state);
         this.$axios.get("queryAllOrderInfoBySid.action", {
           params
         }).then(function (result) {
           _this.tableData = result.data.rows;
+          _this.total = result.data.total;
         }).catch(function (error) {
           alert(error)
         })
+      },
+      updateOrder(index, row) {
+        var _this = this;
+        this.$axios.get("updateOrderInfoBySid.action", {
+          params: {
+            orderid: row.orderid
+          }
+        }).then((res => {
+          if (res.data == "修改成功") {
+            _this.$message({
+              message: res.data,
+              type: 'success'
+            });
+            _this.getOrderData();
+          } else {
+            _this.$message({
+              message: res.data,
+              type: 'error'
+            });
+          }
+
+        })).catch(error => (
+          alert(error)
+        ))
       }
     },
     created() {

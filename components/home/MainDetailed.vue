@@ -1,7 +1,9 @@
 <template>
   <div style="height: 100%;width: 1385px;margin-top: -8px;margin-left: -27px">
-    <el-badge :value="1" class="shopping_cart_btn_item" type="primary">
-      <el-button icon="el-icon-shopping-cart-1" circle type="warning" class="shopping_cart_btn"></el-button>
+    <shopping-cat-com/>
+    <el-badge :value="shoppingCatNumSum" class="shopping_cart_btn_item" type="primary">
+      <el-button @click="$children[0].shoppingBool = true" icon="el-icon-shopping-cart-1" circle type="warning"
+                 class="shopping_cart_btn"></el-button>
     </el-badge>
     <el-container>
       <el-header style="height: 50px;">
@@ -93,8 +95,8 @@
             </el-col>
             <el-col :span="4">
               <div style="margin-top: 30px">
-                <el-button round><i class="el-icon-shopping-cart-2" style="font-size: 18px"></i>&emsp;<a
-                  style="font-size: 18px">购物车</a></el-button>
+                <!--                <el-button round><i class="el-icon-shopping-cart-2" style="font-size: 18px"></i>&emsp;<a-->
+                <!--                  style="font-size: 18px">购物车</a></el-button>-->
               </div>
             </el-col>
           </el-row>
@@ -135,7 +137,8 @@
                   <!-- <el-tag type="danger">标签五:</el-tag><br><br>-->
 
                   <el-button type="danger" @click="purchase" style="text-align: center;width: 130px;">购买</el-button>&emsp;
-                  <el-button type="danger" @click="shoppingcar" style="text-align: center;width: 150px;">购物车</el-button>
+                  <el-button type="danger" @click="shoppingcar" style="text-align: center;width: 150px;">加入购物车
+                  </el-button>
                 </div>
 
               </el-col>
@@ -176,19 +179,23 @@
 
 <script>
 
+  import ShoppingCatCom from "../can/shoppingCat";
+
   export default {
     name: "MainDetailed",
+    components: {ShoppingCatCom},
     data() {
       return {
         show: false,
         shoa: true,
         dialogVisible: false,
         shujua: [{}],
-        input1:'',
+        input1: '',
         shuju: [{img: "./src/assets/image/login.jpg"},
           {img: "./src/assets/image/logo.png"},
           {img: "./src/assets/image/logo.png"}],
         imgaa: '',
+        shoppingCatNumSum: 0
       }
     },
     methods: {
@@ -208,6 +215,7 @@
       //注销
       logout() {
         sessionStorage.removeItem("username");  //从浏览器session清空数据
+        sessionStorage.removeItem("uid");  //从浏览器session清空数据
         this.show = !this.show;
         this.shoa = !this.shoa;
         this.$message({
@@ -289,8 +297,25 @@
         this.$router.push("/mainPage")
       }
       ,
-      //购物车
+      //加入购物车
       shoppingcar() {
+        if (this.$children[0].shop.search("name", this.shujua[0].cname).size === 0) {
+          let data = new URLSearchParams();
+          data.set("sid", this.shujua[0].cid);
+          data.set("uid", sessionStorage.getItem("uid"));
+          data.set("tid", this.shujua[0].tid);
+          data.set("inventory", this.shujua[0].warehouseGoods.stock);
+          this.$axios.post("inShoppingCat.action", data).then((r) => {
+            this.$message(r.data ? "添加成功" : "添加失败");
+          });
+        } else {
+          let data = new URLSearchParams();
+          data.set("sid", this.shujua[0].cid);
+          data.set("uid", sessionStorage.getItem("uid"));
+          this.$axios.post("upShoppingCatGoodsNum.action", data).then((r) => {
+            this.$message(r.data ? "添加成功" : "添加失败");
+          });
+        }
 
       }
     }

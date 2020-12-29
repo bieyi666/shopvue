@@ -25,7 +25,7 @@ import AccountInfo from "../components/user/child/AccountInfo.vue";
 //账号安全
 //地址管理
 import AddressManagement from "../components/user/child/AddressManagement.vue";
-
+import StoreApply from "../components/user/child/storeApply.vue";
 //订单管理
 import MyOrderInfo from "../components/user/child/MyOrderInfo.vue";
 
@@ -40,6 +40,7 @@ import MerchantIncome from '../components/merchant/MerchantIncome.vue'
 import TestECharts from "../components/merchant/TestECharts";
 import TestUpload from "../components/merchant/TestUpload";
 
+import Success from "../components/can/Success";
 
 
 //Vue组件使用Vue-router组件   mark
@@ -64,7 +65,11 @@ var routes = [
         component: Register
       }
     ]
+  },{
+    //支付成功
+    path: '/success', component: Success,
   },
+
   {
     path: '/mainDetailed',component: MainDetailed,
     children: [
@@ -126,6 +131,11 @@ var routes = [
         //地址管理
         path: '/myOrderInfo',
         component: MyOrderInfo
+      },
+      {
+      //  成为商户
+        path: '/storeApply',
+        component: StoreApply
       }
     ]
   },

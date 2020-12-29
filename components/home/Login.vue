@@ -86,8 +86,11 @@
                 message: result.data.msg,
                 type: 'success'
               });
+
               sessionStorage.setItem("username",result.data.username);
               sessionStorage.setItem("uid",result.data.uid);
+
+              sessionStorage.setItem("shstoreid",result.data.shstoreid);
 
               _this.$parent.$parent.dialogVisible = false;
               _this.$parent.$parent.show=true;
