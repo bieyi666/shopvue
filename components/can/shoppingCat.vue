@@ -320,26 +320,28 @@
         let data = new URLSearchParams();
         data.set("str", JSON.stringify(str));
         data.set("uid", sessionStorage.getItem("uid"));
-        this.$axios.post("inOrderInfo1.action", data).then((r) => {
+        this.$axios.post("inOrderInfo.action", data).then((r) => {
           if (r.data > 0) {
+            sessionStorage.removeItem("message");
             sessionStorage.setItem("message", r.data);
             this.GoodsDelChecked1()
           }
         });
 
 
-        // this.payInfo.totalAmount = this.shoppingCatPriceSum;
-        // let formData = new FormData();
-        // Object.keys(this.payInfo).forEach((key) => {
-        //   formData.append(key, this.payInfo[key]);
-        // });
-        // this.$axios.post('alipay.action', formData).then((r) => {
-        //   const div = document.createElement('div')
-        //   div.innerHTML = r.data // data就是接口返回的form 表单字符串
-        //   document.body.appendChild(div)
-        //   document.forms[0].setAttribute('target', '_blank') // 新开窗口跳转
-        //   document.forms[0].submit()
-        // });
+        this.payInfo.totalAmount = this.shoppingCatPriceSum;
+        this.payInfo.outTradeNo = Date.now();
+        let formData = new FormData();
+        Object.keys(this.payInfo).forEach((key) => {
+          formData.append(key, this.payInfo[key]);
+        });
+        this.$axios.post('alipay.action', formData).then((r) => {
+          const div = document.createElement('div')
+          div.innerHTML = r.data // data就是接口返回的form 表单字符串
+          document.body.appendChild(div)
+          // document.forms[0].setAttribute('target', '_blank') // 新开窗口跳转
+          document.forms[0].submit()
+        });
       }
     },
     watch: {
