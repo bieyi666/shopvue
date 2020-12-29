@@ -1,7 +1,7 @@
 <!--商户主页-->
 <template>
     <div style="height: 400px">
-     <el-image style="margin-top: 150px" src="src/assets/merchant-2.jpg"></el-image>
+     <el-image style="width: 100%;height: 100%;border-radius: 10px" src="src/assets/merchant-1.jpg"></el-image>
 
     </div>
 </template>

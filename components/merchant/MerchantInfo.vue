@@ -93,22 +93,16 @@
       updateMerchantInfo(){
         /* formData格式提交： */
         var _this=this;
-        this.storeFrom.photo="";
-        let formData = new FormData();
+        let formData = new URLSearchParams();
         for(var key in this.storeFrom){
-          formData.append(key,this.storeFrom[key]);
+          if(key!='orderInfo'){
+            formData.append(key,this.storeFrom[key]);
+          }
+
         }
         formData.delete("photo");
         formData.append("photo",this.photo);
-        this.$axios({
-          method:"post",
-          url:"updateStoreInfoBySid.action",
-          headers: {
-            'Content-Type': 'multipart/form-data'
-          },
-
-          data:formData
-        }).then((res)=>{
+        this.$axios.post("updateStoreInfoBySid.action",formData).then((res)=>{
           if (res.data == '修改成功'){
             _this.$message({
               message: '修改成功',

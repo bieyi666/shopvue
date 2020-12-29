@@ -127,12 +127,12 @@
                 <el-menu-item index="2">
                   <i class="el-icon-document"></i>
                   <span slot="title">
-                  <router-link to="/merchantIncome">
+                  <router-link to="/testECharts">
                       我的收入
                   </router-link>
                    </span>
                 </el-menu-item>
-                <el-menu-item index="3">
+                <!--<el-menu-item index="3">
                   <i class="el-icon-document"></i>
                   <span slot="title">
                     <router-link to="/testECharts">
@@ -148,18 +148,18 @@
                       测试文件上传
                   </router-link>
                    </span>
-                </el-menu-item>
+                </el-menu-item>-->
               </el-menu>
             </el-col>
 
             <el-col :span="19">
               <!--主体内容-->
               <el-main class="bgColor" style="border-radius: 10px">
-                <div style="height: 250px">
-                  <el-image src="src/assets/merchant-1.jpg"
-                            style="width: 100%;height: 100%;border-radius: 10px"></el-image>
+                <div style="height: 100px">
+                  <el-image src="src/assets/merchant-3.gif"
+                            ></el-image>
                 </div>
-                <div>
+                <div style="margin-top:100px;">
                   <!--路由展示-->
                   <router-view>
 
