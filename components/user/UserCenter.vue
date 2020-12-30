@@ -34,9 +34,9 @@
                   <!--                  accountInfo-->
                   <router-link to="/accountInfo">账号信息</router-link>
                 </li>
-                <li>
-                  <a href="#">账号安全</a>
-                </li>
+<!--                <li>-->
+<!--                  <a href="#">账号安全</a>-->
+<!--                </li>-->
                 <li>
                   <router-link to="/addressManagement">地址管理</router-link>
                 </li>
@@ -59,9 +59,9 @@
                   <router-link to="/storeApply" :class="{'storeApplysty':display1}">成为商户</router-link>
                   <router-link to="/Merchant" :class="{'Merchantsty':display2}">商户主页</router-link>
                 </li>
-                <li>
-                  <a href="#">客服</a>
-                </li>
+<!--                <li>-->
+<!--                  <a href="#">客服</a>-->
+<!--                </li>-->
               </ul>
             </div>
           </div>
@@ -100,7 +100,7 @@
         this.$axios.get("pdStore.action?uid=" + _this.usersId)
           .then(function (result) {
             sessionStorage.setItem("storeid",result.data.storeId)
-            if(result.data.name===undefined){
+            if(result.data.state===0||result.data.state===undefined){
               _this.display1=false;
               _this.display2=true;
             }else {

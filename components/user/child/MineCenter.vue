@@ -13,7 +13,7 @@
     </div>
 
 
-    <div style="border: 1px solid #eaeaea;height: 590px;margin-top: 20px">
+    <div style="border: 1px solid #eaeaea;height: 590px;margin-top: 20px;display: none">
       <!--         未完成订单头部标题-->
       <div style="height: 40px;border: 0px ;background: #f4f4f4">
         <el-row>
@@ -28,7 +28,7 @@
       <!--        未完成订单页-->
 
       <!--    无订单显示页-->
-      <div id="noOrder" style="">
+      <div id="noOrder" style="display: none">
         <div class="noOrderDiv" style="display: flex;
         justify-content: center;
         align-items: center">

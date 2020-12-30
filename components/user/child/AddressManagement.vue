@@ -65,7 +65,9 @@
             </el-table-column>
             <el-table-column align="left">
               <template slot-scope="scope">
-                <button @click="delUserAddress(scope.row)">删除</button>
+                <div @click="delUserAddress(scope.row)">
+                  <i class="el-icon-delete"></i>
+                </div>
               </template>
             </el-table-column>
           </el-table>
@@ -88,8 +90,8 @@
           <el-input
             type="text"
             placeholder=""
-            v-model="sname" :disabled="true"
-            style="width: 220px"
+            v-model="sname" :disabled="true" size="mini"
+            style="width: 180px"
           />
         </el-form-item>
 
@@ -100,7 +102,7 @@
             v-model="stag"
             maxlength="10"
             show-word-limit
-            style="width: 220px"
+            style="width: 240px"
           />
         </el-form-item>
 
@@ -174,7 +176,7 @@
         uid: sessionStorage.getItem('uid'),
 
 
-        defaultStoreid: sessionStorage.getItem('storeid'),
+        defaultStoreid: sessionStorage.getItem('shstoreid'),
 
         dialogFormVisible: false,
         dialogTableVisible: false,
@@ -202,6 +204,7 @@
         this.$axios.get("delUserAddress.action?aid=" + row.aid)
           .then(function () {
             _this.getUserAddress();
+            this.$message.success('删除成功');
           })
           .catch(function (error) {
             alert(error)
@@ -268,6 +271,10 @@
         this.$axios.post("editUserAddress.action", params)
           .then(function (result) {
 
+            sessionStorage.removeItem("shstoreid");
+            sessionStorage.setItem("shstoreid", row.storeid);
+
+            _this.getUserAddress()
           })
           .catch(function (error) {
             alert(error)

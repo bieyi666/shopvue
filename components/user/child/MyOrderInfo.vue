@@ -2,21 +2,12 @@
   <div id="MyOrderInfo">
     <!--    订单表格标题-->
 
-
-    <el-row :gutter="20">
-      <el-col :span="2">
-        <a href="#" @click="getUserOrder(null)">全部订单</a>
-      </el-col>
-      <el-col :span="2">
-        <a href="#" @click="getUserOrder(1)">待付款</a>
-      </el-col>
-      <el-col :span="2">
-        <a href="#" @click="getUserOrder(2)">待提货</a>
-      </el-col>
-      <el-col :span="2">
-        <a href="#" @click="getUserOrder(3)">已提货</a>
-      </el-col>
-    </el-row>
+    <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal" @select="handleSelect">
+      <el-menu-item index="1"><a href="#" @click="getUserOrder(null)">全部订单</a></el-menu-item>
+      <el-menu-item index="2"><a href="#" @click="getUserOrder(1)">待付款</a></el-menu-item>
+      <el-menu-item index="3"><a href="#" @click="getUserOrder(2)">待提货</a></el-menu-item>
+      <el-menu-item index="4"><a href="#" @click="getUserOrder(3)">已提货</a></el-menu-item>
+    </el-menu>
     <div>
       <div style="width: 100%;margin-top: 20px;border: 1px silver solid">
         <table style="width: 100%;font-size: 12px;color: #3c3c3c;background: #f5f5f5">
@@ -54,7 +45,7 @@
             </td>
             <td>
               <!--              删除订单-->
-              <a style="font-size: 30px;"><i class="el-icon-delete-solid"></i></a>
+
             </td>
 
           </tr>
@@ -67,7 +58,7 @@
                 <!--                商品图片-->
                 <el-image
                   style="width: 80px; height: 80px"
-                  :src="$host+og.commodity.picture"
+                  :src="$host+og.commodity.picture" fit="contain"
                   :preview-src-list="[$host+og.commodity.picture]">
                 </el-image>
               </div>
@@ -97,7 +88,7 @@
             </td>
             <td >
               <div style="padding-bottom: 10px;padding-top: 10px">
-                <el-button type="warning" plain v-if="o.state3==1">前往付款</el-button>
+                <el-button type="warning" plain v-if="o.state3==1" @click="fukuang(getMoney(index),o.orderid)">前往付款</el-button>
                 <el-button type="success" plain v-if="o.state3==2" @click="qdOrder(o.orderid)">确认收货</el-button>
               </div>
             </td>
@@ -125,6 +116,8 @@
     data() {
       return {
         state3: null,
+        activeIndex:'1',
+
 
         userId: sessionStorage.getItem('uid'),
         total: 0,
@@ -132,9 +125,35 @@
         rows: '',
         MyorderInfo: [],
 
+        payInfo: {
+          outTradeNo: "10011222005454",
+          subject: "ak47",
+          totalAmount: 1,
+          body: "nice"
+        }
       }
     },
     methods: {
+      fukuang(money,orderid){
+        sessionStorage.removeItem("orderid");
+        sessionStorage.setItem("orderid", orderid);
+        this.payInfo.totalAmount = money;
+        this.payInfo.outTradeNo = Date.now();
+        this.payInfo.subject = Date.now();
+        let formData = new FormData();
+        Object.keys(this.payInfo).forEach((key) => {
+          formData.append(key, this.payInfo[key]);
+        });
+        this.$axios.post('alipay.action', formData).then((r) => {
+          const div = document.createElement('div')
+          div.innerHTML = r.data // data就是接口返回的form 表单字符串
+          document.body.appendChild(div)
+          // document.forms[0].setAttribute('target', '_blank') // 新开窗口跳转
+          document.forms[0].submit()
+        });
+      },
+
+
       handleSizeChange(val) {
         var _this = this;
         this.rows = val;
@@ -182,6 +201,7 @@
         this.$axios.post("qdOrder.action", params)
           .then(function (result) {
             _this.getUserOrder(3)
+
           })
           .catch(function (error) {
             alert(error)

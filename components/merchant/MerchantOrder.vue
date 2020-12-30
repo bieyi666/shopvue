@@ -113,7 +113,7 @@
             <el-dropdown-menu slot="dropdown">
               <el-dropdown-item command="1">待付款</el-dropdown-item>
               <el-dropdown-item command="2">待发货</el-dropdown-item>
-              <el-dropdown-item command="3">待确认收货</el-dropdown-item>
+              <!--<el-dropdown-item command="3">待确认收货</el-dropdown-item>-->
               <el-dropdown-item command="4">已收货</el-dropdown-item>
             </el-dropdown-menu>
           </el-dropdown>
@@ -131,9 +131,9 @@
             </span>
 
             <span v-if="scope.row.state1 === 1">
-              <span v-if="scope.row.state2 === 0">
+              <!--<span v-if="scope.row.state2 === 0">
                 待确认收货
-              </span>
+              </span>-->
               <span v-if="scope.row.state2 === 1">
                <span v-if="scope.row.state3 === 2">
                 待取货

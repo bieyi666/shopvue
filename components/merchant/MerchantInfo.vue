@@ -11,7 +11,7 @@
       <el-form-item label="地址" prop="address">
         <el-input disabled v-model="storeFrom.address"></el-input>
       </el-form-item>
-      <el-form-item label="店铺图片" :label-width="labelWidth">
+      <el-form-item label="店铺图片" :label-width="labelWidth" >
         <!--<input type="file" @change="getFile($event)">-->
         <el-upload
           class="avatar-uploader"
@@ -19,7 +19,7 @@
           :show-file-list="false"
           :on-success="handleAvatarSuccess"
           :before-upload="beforeAvatarUpload">
-          <img v-if="imageUrl" :src="imageUrl" class="avatar">
+          <img style="height: 100px" v-if="imageUrl" :src="imageUrl" class="avatar">
           <i v-else class="el-icon-plus avatar-uploader-icon"></i>
         </el-upload>
       </el-form-item>

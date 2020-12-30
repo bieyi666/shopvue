@@ -339,6 +339,8 @@
       logout() {
         sessionStorage.removeItem("username");  //从浏览器session清空数据
         sessionStorage.removeItem("uid");
+        sessionStorage.removeItem("storeid")
+        sessionStorage.removeItem("shstoreid")
         this.show = !this.show;
         this.shoa = !this.shoa;
         this.$message({

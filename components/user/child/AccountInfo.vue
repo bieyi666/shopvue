@@ -85,6 +85,7 @@
           uname: '',
           phone: '',
           photo: '',
+          shstoreid:sessionStorage.getItem("shstoreid"),
           img: ''  //保存文件内容
         }
       }

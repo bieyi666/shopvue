@@ -13,6 +13,11 @@
       let data = new URLSearchParams();
       data.set("orderId", sessionStorage.getItem('message'));
       this.$axios.post("upOrderInfo.action", data);
+
+      var params = new URLSearchParams();
+      params.append("orderid", sessionStorage.getItem('orderid'));
+      params.append("state3", 2);
+      this.$axios.post("qdOrder.action", params);
     }
   }
 </script>

@@ -136,7 +136,6 @@
                   <br><br><br><br><br><br>
                   <!-- <el-tag type="danger">标签五:</el-tag><br><br>-->
 
-                  <el-button type="danger" @click="purchase" style="text-align: center;width: 130px;">购买</el-button>&emsp;
                   <el-button type="danger" @click="shoppingcar" style="text-align: center;width: 150px;">加入购物车
                   </el-button>
                 </div>
@@ -249,7 +248,7 @@
         });
       },
       //购买
-      purchase() {
+      /*purchase() {
         var username = sessionStorage.getItem("username");
         if (!username) {
           this.$message({
@@ -257,8 +256,8 @@
             message: '请登录',
             type: 'error'
           });
-          /*this.dialogVisible = true
-          this.$router.push("/logins")*/
+          /!*this.dialogVisible = true
+          this.$router.push("/logins")*!/
         } else {
           this.shujua.forEach(item => {
             if (item.warehouseGoods != null) {
@@ -276,7 +275,7 @@
             }
           })
         }
-      },
+      },*/
       //个人中心
       myorder() {
         var username = sessionStorage.getItem("username");

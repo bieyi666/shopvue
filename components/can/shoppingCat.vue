@@ -320,6 +320,7 @@
         let data = new URLSearchParams();
         data.set("str", JSON.stringify(str));
         data.set("uid", sessionStorage.getItem("uid"));
+        data.set("storeid",sessionStorage.getItem("shstoreid"))
         this.$axios.post("inOrderInfo.action", data).then((r) => {
           if (r.data > 0) {
             sessionStorage.removeItem("message");
@@ -331,6 +332,7 @@
 
         this.payInfo.totalAmount = this.shoppingCatPriceSum;
         this.payInfo.outTradeNo = Date.now();
+        this.payInfo.subject = Date.now();
         let formData = new FormData();
         Object.keys(this.payInfo).forEach((key) => {
           formData.append(key, this.payInfo[key]);
